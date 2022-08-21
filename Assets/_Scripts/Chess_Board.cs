@@ -135,6 +135,7 @@ public class Chess_Board
 
     public string CheckEventType(Piece piece)
     {
+        Debug.Log("CheckEventType");
         // set selectedOutline
         if (selectedOutline == null)
         {
@@ -145,18 +146,20 @@ public class Chess_Board
             renderer.sortingLayerName = "Chess";
             selectedOutline.transform.localScale = new Vector3(0.15f, 0.15f, 1);
         }
+        selectedOutline.SetActive(true);
         selectedOutline.transform.position = new Vector3(piece.pos[1] * Constant.SizeFor1Box, piece.pos[0] * Constant.SizeFor1Box, 0);
 
         ClearPossibleMove();
 
         if (
             (piece.obj.name.Contains(Constant.White) &&
-            GameManager.GetInstance.isWhiteTurn) ||
+            GameManager.Instance.isWhiteTurn) ||
             (piece.obj.name.Contains(Constant.Black) &&
-            !GameManager.GetInstance.isWhiteTurn)
+            !GameManager.Instance.isWhiteTurn)
         )
         {
-            GameManager.GetInstance.chessSelectPos = new int[2] { piece.pos[0], piece.pos[1] };
+            Debug.Log("CheckEventType123");
+            GameManager.Instance.chessSelectPos = new int[2] { piece.pos[0], piece.pos[1] };
             return Constant.ShowPossible;
         } 
         return Constant.Nothing;
@@ -165,8 +168,15 @@ public class Chess_Board
     public void MoveChess()
     {
         Debug.Log("MoveChess");
-        GameManager.GetInstance.chessSelectPos = new int[2] { -1, -1 };
-        GameManager.GetInstance.moveToPos = new int[2] { -1, -1 };
+        Debug.Log(GameManager.Instance.chessSelectPos[0]);
+        Debug.Log(GameManager.Instance.chessSelectPos[1]);
+        Debug.Log(GameManager.Instance.moveToPos[0]);
+        Debug.Log(GameManager.Instance.moveToPos[1]);
+        Debug.Log("MoveChess");
+        GameManager.Instance.chessSelectPos = new int[2] { -1, -1 };
+        GameManager.Instance.moveToPos = new int[2] { -1, -1 };
+        ClearPossibleMove();
+        selectedOutline.SetActive(false);
     }
 
     public void AddPossibleMove(int y, int x)

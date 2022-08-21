@@ -7,18 +7,15 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance = null;
-    public static GameManager GetInstance
+    public static GameManager Instance { get; private set; }
+    private void Awake()
     {
-        get
+        if (Instance != null && Instance != this)
         {
-            if (instance == null)
-            {
-                GameObject go = new();
-                instance = go.AddComponent<GameManager>();  
-            }
-            return instance;
+            Destroy(this);
+            return;
         }
+        Instance = this;
     }
 
     private Chess_Board board;
