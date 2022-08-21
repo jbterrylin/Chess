@@ -24,10 +24,13 @@ public class GameManager : MonoBehaviour
     private Chess_Board board;
     public bool isWhiteTurn = true;
     public int[] chessSelectPos;
+    public int[] moveToPos;
 
     void Start()
     {
         chessSelectPos = new int[2] { -1, -1 };
+        moveToPos = new int[2] { -1, -1 };
+
         board = new Chess_Board();
     }
 

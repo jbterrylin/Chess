@@ -9,14 +9,14 @@ namespace Assets._Scripts
     static class Constant
     {
         public static readonly int[,] ChessBoardInit = { 
-            { 2,3,4,5,6,4,3,2 },
-            { 1,1,1,1,1,1,1,1 },
+            { 2,3,4,5,6,4,3,2 }, // white
+            { 1,1,1,1,1,1,1,1 }, // white
+            { 0,0,1,0,0,0,0,0 },
             { 0,0,0,0,0,0,0,0 },
             { 0,0,0,0,0,0,0,0 },
             { 0,0,0,0,0,0,0,0 },
-            { 0,0,0,0,0,0,0,0 },
-            { 1,1,1,1,1,1,1,1 },
-            { 2,3,4,5,6,4,3,2 },
+            { 1,1,1,1,1,1,1,1 }, // black
+            { 2,3,4,5,6,4,3,2 }, // black
         };
 
         public static readonly string White = "white";
@@ -53,5 +53,8 @@ namespace Assets._Scripts
         public const string ShowPossible = "show";
         public const string CheckValid = "check";
         public const string Nothing = "";
+
+        public const string ChessLayer = "Chess";    //LOW
+        public const string PointerLayer = "Pointer";       //HIGH
     }
 }

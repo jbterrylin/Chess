@@ -18,11 +18,12 @@ public class Chess_Board
         }
     }
 
-    private readonly Piece[,] pieces = new Piece[8, 8];
+    public readonly Piece[,] pieces = new Piece[8, 8];
     readonly Dictionary<string, Texture2D[]> sprites = new();
     public GameManager gm;
 
-    public GameObject selected_outline;
+    public GameObject selectedOutline;
+    public List<PossibleMove> possiblePosList = new();
 
     public Chess_Board()
     {
@@ -47,7 +48,7 @@ public class Chess_Board
                 {
                     case 1:
                         pieces[y, x] = new Pawn();
-                        if (y < 4)
+                        if (y < 2)
                         {
                             pieces[y, x].SetSprite(sprites[Constant.Pawn][0]);
                         }
@@ -58,7 +59,7 @@ public class Chess_Board
                         break;
                     case 2:
                         pieces[y, x] = new Rook();
-                        if (y < 4)
+                        if (y <2)
                         {
                             pieces[y, x].SetSprite(sprites[Constant.Rook][0]);
                         }
@@ -69,7 +70,7 @@ public class Chess_Board
                         break;
                     case 3:
                         pieces[y, x] = new Knight();
-                        if (y < 4)
+                        if (y < 2)
                         {
                             pieces[y, x].SetSprite(sprites[Constant.Knight][0]);
                         }
@@ -80,7 +81,7 @@ public class Chess_Board
                         break;
                     case 4:
                         pieces[y, x] = new Bishop();
-                        if (y < 4)
+                        if (y < 2)
                         {
                             pieces[y, x].SetSprite(sprites[Constant.Bishop][0]);
                         }
@@ -91,7 +92,7 @@ public class Chess_Board
                         break;
                     case 5:
                         pieces[y, x] = new Queen();
-                        if (y < 4)
+                        if (y < 2)
                         {
                             pieces[y, x].SetSprite(sprites[Constant.Queen][0]);
                         }
@@ -102,7 +103,7 @@ public class Chess_Board
                         break;
                     case 6:
                         pieces[y, x] = new King();
-                        if (y < 4)
+                        if (y < 2)
                         {
                             pieces[y, x].SetSprite(sprites[Constant.King][0]);
                         }
@@ -134,45 +135,53 @@ public class Chess_Board
 
     public string CheckEventType(Piece piece)
     {
-        if (selected_outline == null) {
-            selected_outline = new();
+        // set selectedOutline
+        if (selectedOutline == null)
+        {
+            selectedOutline = new();
             var selectedOutlineTexture = Resources.Load("selected_outline") as Texture2D;
-            SpriteRenderer renderer = selected_outline.AddComponent<SpriteRenderer>();
+            SpriteRenderer renderer = selectedOutline.AddComponent<SpriteRenderer>();
             renderer.sprite = Sprite.Create(selectedOutlineTexture, new Rect(0, 0, selectedOutlineTexture.width, selectedOutlineTexture.height), Vector2.zero);
             renderer.sortingLayerName = "Chess";
-            selected_outline.transform.localScale = new Vector3(0.15f, 0.15f, 1);
+            selectedOutline.transform.localScale = new Vector3(0.15f, 0.15f, 1);
         }
-        selected_outline.transform.position = new Vector3(piece.pos[1] * Constant.SizeFor1Box, piece.pos[0] * Constant.SizeFor1Box, 0);
-        
-        // is first touch, else second touch
-        if (
-            GameManager.GetInstance.chessSelectPos[0] == -1 &&
-            GameManager.GetInstance.chessSelectPos[1] == -1)
-        {
-            // is first touch is own chess
-            if(
-                (piece.obj.name.Contains(Constant.White) &&
-                GameManager.GetInstance.isWhiteTurn) ||
-                (piece.obj.name.Contains(Constant.Black) &&
-                !GameManager.GetInstance.isWhiteTurn)
-            )
-            {
-                // show possible move
-                Debug.Log("Constant.ShowPossible");
-                return Constant.ShowPossible;
-            }
-            else
-            {
-                Debug.Log("Cannot Move Other People Chess");
-            }
-        } 
-        else
-        {
-            // check move possible
-            Debug.Log("Other People Chess");
-            return Constant.CheckValid;
-        }
+        selectedOutline.transform.position = new Vector3(piece.pos[1] * Constant.SizeFor1Box, piece.pos[0] * Constant.SizeFor1Box, 0);
 
+        ClearPossibleMove();
+
+        if (
+            (piece.obj.name.Contains(Constant.White) &&
+            GameManager.GetInstance.isWhiteTurn) ||
+            (piece.obj.name.Contains(Constant.Black) &&
+            !GameManager.GetInstance.isWhiteTurn)
+        )
+        {
+            GameManager.GetInstance.chessSelectPos = new int[2] { piece.pos[0], piece.pos[1] };
+            return Constant.ShowPossible;
+        } 
         return Constant.Nothing;
+    }
+
+    public void MoveChess()
+    {
+        Debug.Log("MoveChess");
+        GameManager.GetInstance.chessSelectPos = new int[2] { -1, -1 };
+        GameManager.GetInstance.moveToPos = new int[2] { -1, -1 };
+    }
+
+    public void AddPossibleMove(int y, int x)
+    {
+        possiblePosList.Add(new PossibleMove(y, x));
+    }
+
+    public void ClearPossibleMove()
+    {
+        if (possiblePosList.Count == 0)
+            return;
+        foreach (var possiblePos in possiblePosList)
+        {
+            possiblePos.Destroy();
+        }
+        possiblePosList.Clear();
     }
 }

@@ -12,9 +12,5 @@ namespace Assets._Scripts.Pieces
         {
 
         }
-        public override void CheckValid()
-        {
-
-        }
     }
 }

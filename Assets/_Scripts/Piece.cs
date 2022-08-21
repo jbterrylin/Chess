@@ -16,9 +16,10 @@ namespace Assets._Scripts
 
         public void SetSprite(Texture2D texture)
         {
+            // set SpriteRenderer
             SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
             renderer.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
-            renderer.sortingLayerName = "Chess";
+            renderer.sortingLayerName = Constant.ChessLayer;
             obj.name = texture.name;
 
             obj.transform.localScale = new Vector3(Constant.ScaleSize, Constant.ScaleSize, 1);
@@ -34,13 +35,17 @@ namespace Assets._Scripts
             var colli = obj.AddComponent<BoxCollider2D>();
             colli.size = new Vector2(0.25f, 0.25f);
 
+            // add click event
             EventTrigger eventTrigger1 = obj.AddComponent<EventTrigger>();
             EventTrigger.Entry entry = new();
             entry.eventID = EventTriggerType.PointerClick;
             entry.callback.AddListener((data) => { OnClick(); });
             eventTrigger1.triggers.Add(entry);
+
+            // set pos
             pos = new int[2] { y, x };
         }
+
         public void OnClick()
         {
             switch (Chess_Board.GetInstance.CheckEventType(this))
@@ -48,15 +53,11 @@ namespace Assets._Scripts
                 case Constant.ShowPossible:
                     ShowPossibleMove();
                     break;
-                case Constant.CheckValid:
-                    CheckValid();
-                    break;
                 case Constant.Nothing:
                     break;
             }
         }
 
         public abstract void ShowPossibleMove();
-        public abstract void CheckValid();
     }
 }

@@ -13,9 +13,5 @@ namespace Assets._Scripts
         {
 
         }
-        public override void CheckValid()
-        {
-
-        }
     }
 }
