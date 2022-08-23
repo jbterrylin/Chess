@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    private Chess_Board board;
     public bool isWhiteTurn = true;
     public int[] chessSelectPos;
     public int[] moveToPos;
@@ -28,7 +27,7 @@ public class GameManager : MonoBehaviour
         chessSelectPos = new int[2] { -1, -1 };
         moveToPos = new int[2] { -1, -1 };
 
-        board = new Chess_Board();
+        _ = Chess_Board.GetInstance;
     }
 
     

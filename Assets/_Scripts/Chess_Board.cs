@@ -4,6 +4,7 @@ using UnityEngine;
 using Assets._Scripts;
 using Assets._Scripts.Pieces;
 using System;
+using System.Linq;
 
 public class Chess_Board
 {
@@ -18,7 +19,7 @@ public class Chess_Board
         }
     }
 
-    public readonly Piece[,] pieces = new Piece[8, 8];
+    public readonly List<Piece> pieces = new();
     readonly Dictionary<string, Texture2D[]> sprites = new();
     public GameManager gm;
 
@@ -47,88 +48,74 @@ public class Chess_Board
                 switch (Constant.ChessBoardInit[y, x])
                 {
                     case 1:
-                        pieces[y, x] = new Pawn();
+                        pieces.Add(new Pawn());
                         if (y < 2)
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Pawn][0]);
+                            pieces.Last().Instantiate(sprites[Constant.Pawn][0], y, x);
                         }
                         else
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Pawn][1]);
+                            pieces.Last().Instantiate(sprites[Constant.Pawn][1], y, x);
                         }
                         break;
                     case 2:
-                        pieces[y, x] = new Rook();
+                        pieces.Add(new Rook());
                         if (y <2)
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Rook][0]);
+                            pieces.Last().Instantiate(sprites[Constant.Rook][0], y, x);
                         }
                         else
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Rook][1]);
+                            pieces.Last().Instantiate(sprites[Constant.Rook][1], y, x);
                         }
                         break;
                     case 3:
-                        pieces[y, x] = new Knight();
+                        pieces.Add(new Knight());
                         if (y < 2)
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Knight][0]);
+                            pieces.Last().Instantiate(sprites[Constant.Knight][0], y, x);
                         }
                         else
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Knight][1]);
+                            pieces.Last().Instantiate(sprites[Constant.Knight][1], y, x);
                         }
                         break;
                     case 4:
-                        pieces[y, x] = new Bishop();
+                        pieces.Add(new Bishop());
                         if (y < 2)
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Bishop][0]);
+                            pieces.Last().Instantiate(sprites[Constant.Bishop][0], y, x);
                         }
                         else
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Bishop][1]);
+                            pieces.Last().Instantiate(sprites[Constant.Bishop][1], y, x);
                         }
                         break;
                     case 5:
-                        pieces[y, x] = new Queen();
+                        pieces.Add(new Queen());
                         if (y < 2)
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Queen][0]);
+                            pieces.Last().Instantiate(sprites[Constant.Queen][0], y, x);
                         }
                         else
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.Queen][1]);
+                            pieces.Last().Instantiate(sprites[Constant.Queen][1], y, x);
                         }
                         break;
                     case 6:
-                        pieces[y, x] = new King();
+                        pieces.Add(new King());
                         if (y < 2)
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.King][0]);
+                            pieces.Last().Instantiate(sprites[Constant.King][0], y, x);
                         }
                         else
                         {
-                            pieces[y, x].SetSprite(sprites[Constant.King][1]);
+                            pieces.Last().Instantiate(sprites[Constant.King][1], y ,x);
                         }
                         break;
                     default:
                         break;
-
                 }
-                switch (Constant.ChessBoardInit[y, x])
-                {
-                    case > 0:
-                        pieces[y, x].Instantiate(y, x);
-                        break;
-                }
-
-                //board[x, y] = blackSprite;
-
-                //Vector3 position = new Vector3(10, 5, 0);
-
-                //board[x, y].transform.position = position;
-                //Instantiate(board[x, y], new Vector3(0, 0, 0), Quaternion.identity);
             }
         }
     }
@@ -147,7 +134,7 @@ public class Chess_Board
             selectedOutline.transform.localScale = new Vector3(0.15f, 0.15f, 1);
         }
         selectedOutline.SetActive(true);
-        selectedOutline.transform.position = new Vector3(piece.pos[1] * Constant.SizeFor1Box, piece.pos[0] * Constant.SizeFor1Box, 0);
+        selectedOutline.transform.position = new Vector3(piece.x * Constant.SizeFor1Box, piece.y * Constant.SizeFor1Box, 0);
 
         ClearPossibleMove();
 
@@ -159,7 +146,7 @@ public class Chess_Board
         )
         {
             Debug.Log("CheckEventType123");
-            GameManager.Instance.chessSelectPos = new int[2] { piece.pos[0], piece.pos[1] };
+            GameManager.Instance.chessSelectPos = new int[2] { piece.y, piece.x };
             return Constant.ShowPossible;
         } 
         return Constant.Nothing;
@@ -168,11 +155,23 @@ public class Chess_Board
     public void MoveChess()
     {
         Debug.Log("MoveChess");
-        Debug.Log(GameManager.Instance.chessSelectPos[0]);
-        Debug.Log(GameManager.Instance.chessSelectPos[1]);
-        Debug.Log(GameManager.Instance.moveToPos[0]);
-        Debug.Log(GameManager.Instance.moveToPos[1]);
-        Debug.Log("MoveChess");
+        var oriY = GameManager.Instance.chessSelectPos[0];
+        var oriX = GameManager.Instance.chessSelectPos[1];
+        var newY = GameManager.Instance.moveToPos[0];
+        var newX = GameManager.Instance.moveToPos[1];
+
+        var tmp = Util.GetPieceFromPieces(newY, newX);
+        tmp?.ClearPiece();
+        pieces.Remove(tmp);
+
+        tmp = Util.GetPieceFromPieces(oriY, oriX);
+        tmp.y = newY;
+        tmp.x = newX;
+        tmp.ChangePosition();
+
+
+
+
         GameManager.Instance.chessSelectPos = new int[2] { -1, -1 };
         GameManager.Instance.moveToPos = new int[2] { -1, -1 };
         ClearPossibleMove();

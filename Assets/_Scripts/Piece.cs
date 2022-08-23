@@ -12,10 +12,14 @@ namespace Assets._Scripts
     public abstract class Piece
     {
         public GameObject obj = new();
-        public int[] pos = new int[2];
+        public int y;
+        public int x;
 
-        public void SetSprite(Texture2D texture)
+        public void Instantiate(Texture2D texture, int y, int x)
         {
+            this.y = y;
+            this.x = x;
+
             // set SpriteRenderer
             SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
             renderer.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
@@ -23,15 +27,7 @@ namespace Assets._Scripts
             obj.name = texture.name;
 
             obj.transform.localScale = new Vector3(Constant.ScaleSize, Constant.ScaleSize, 1);
-        }
 
-        public void Instantiate(int y, int x)
-        {
-            // offset + (index * box width)
-            if (obj.GetComponent<SpriteRenderer>() != null)
-            {
-                obj.transform.position = new Vector3((Constant.SizeFor1Box / 4) + x * Constant.SizeFor1Box, (Constant.SizeFor1Box / 5) + y * Constant.SizeFor1Box, 0);
-            }
             var colli = obj.AddComponent<BoxCollider2D>();
             colli.size = new Vector2(0.25f, 0.25f);
 
@@ -42,12 +38,32 @@ namespace Assets._Scripts
             entry.callback.AddListener((data) => { OnClick(); });
             eventTrigger1.triggers.Add(entry);
 
-            // set pos
-            pos = new int[2] { y, x };
+            // offset + (index * box width)
+            obj.transform.position = new Vector3((Constant.SizeFor1Box / 4) + x * Constant.SizeFor1Box, (Constant.SizeFor1Box / 5) + y * Constant.SizeFor1Box, 0);
+        }
+
+        public void ChangePosition()
+        {
+            // offset + (index * box width)
+            obj.transform.position = new Vector3((Constant.SizeFor1Box / 4) + x * Constant.SizeFor1Box, (Constant.SizeFor1Box / 5) + y * Constant.SizeFor1Box, 0);
+        }
+
+        public void ClearPiece()
+        {
+            if (obj.TryGetComponent<SpriteRenderer>(out _))
+            {
+                UnityEngine.Object.Destroy(obj);
+                obj = null;
+            }
         }
 
         public void OnClick()
         {
+            if (!obj.TryGetComponent<SpriteRenderer>(out _))
+            {
+                return;
+            }
+            
             switch (Chess_Board.GetInstance.CheckEventType(this))
             {
                 case Constant.ShowPossible:

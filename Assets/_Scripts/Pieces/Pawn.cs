@@ -20,33 +20,33 @@ namespace Assets._Scripts.Pieces
             {
                 direction--;
             }
-            var cb = Chess_Board.GetInstance.pieces;
 
             // charge
             if (
-                ((this.obj.name.Contains(Constant.White) && this.pos[0] == 1) ||
-                (this.obj.name.Contains(Constant.Black) && this.pos[0] == 6)) &&
-                cb[this.pos[0] + direction, this.pos[1]] == null &&
-                cb[this.pos[0] + direction + direction, this.pos[1]] == null
+                ((this.obj.name.Contains(Constant.White) && this.y == 1) ||
+                (this.obj.name.Contains(Constant.Black) && this.y == 6)) &&
+                Util.GetPieceFromPieces(this.y + direction, this.x) == null &&
+                Util.GetPieceFromPieces(this.y + direction + direction, this.x) == null
             )
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.pos[0] + direction + direction, this.pos[1]);
+                Chess_Board.GetInstance.AddPossibleMove(this.y + direction + direction, this.x);
             }
 
             // normal move
-            if (cb[this.pos[0] + direction, this.pos[1]] == null)
+            if (Util.GetPieceFromPieces(this.y + direction, this.x) == null)
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.pos[0] + direction, this.pos[1]);
+                Chess_Board.GetInstance.AddPossibleMove(this.y + direction, this.x);
             }
 
             // take piece
-            if (this.pos[1] < 7 && cb[this.pos[0] + direction, this.pos[1] + 1] != null)
+            // TODO: still can take own piece
+            if (this.x < 7 && Util.GetPieceFromPieces(this.y + direction, this.x + 1) != null)
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.pos[0] + direction, this.pos[1] + 1);
+                Chess_Board.GetInstance.AddPossibleMove(this.y + direction, this.x + 1);
             }
-            if (this.pos[1] > 0 && cb[this.pos[0] + direction, this.pos[1] -1] != null)
+            if (this.x > 0 && Util.GetPieceFromPieces(this.y + direction, this.x - 1) != null)
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.pos[0] + direction, this.pos[1] - 1);
+                Chess_Board.GetInstance.AddPossibleMove(this.y + direction, this.x - 1);
             }
         }
     }
