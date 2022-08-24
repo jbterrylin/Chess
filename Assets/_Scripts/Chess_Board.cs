@@ -146,7 +146,7 @@ public class Chess_Board
         )
         {
             Debug.Log("CheckEventType123");
-            GameManager.Instance.chessSelectPos = new int[2] { piece.y, piece.x };
+            GameManager.Instance.chessSelectPos = new int[2] { piece.x, piece.y };
             return Constant.ShowPossible;
         } 
         return Constant.Nothing;
@@ -155,12 +155,13 @@ public class Chess_Board
     public void MoveChess()
     {
         Debug.Log("MoveChess");
-        var oriY = GameManager.Instance.chessSelectPos[0];
-        var oriX = GameManager.Instance.chessSelectPos[1];
-        var newY = GameManager.Instance.moveToPos[0];
-        var newX = GameManager.Instance.moveToPos[1];
+        var oriX = GameManager.Instance.chessSelectPos[0];
+        var oriY = GameManager.Instance.chessSelectPos[1];
+        var newX = GameManager.Instance.moveToPos[0];
+        var newY = GameManager.Instance.moveToPos[1];
 
         var tmp = Util.GetPieceFromPieces(newY, newX);
+        var killedPieceName = (tmp == null ? "" : tmp.obj.name);
         tmp?.ClearPiece();
         pieces.Remove(tmp);
 
@@ -169,8 +170,8 @@ public class Chess_Board
         tmp.x = newX;
         tmp.ChangePosition();
 
-
-
+        GameManager.Instance.historyList.Add(tmp.obj.name + "-(" + Util.IntToAlpha(oriX+1)+ oriY + ">" + Util.IntToAlpha(newX + 1) + newY + ")" + (killedPieceName != "" ? ("/" + killedPieceName) : ""));
+        GameManager.Instance.AddToHistoryMove();
 
         GameManager.Instance.chessSelectPos = new int[2] { -1, -1 };
         GameManager.Instance.moveToPos = new int[2] { -1, -1 };

@@ -24,7 +24,7 @@ namespace Assets._Scripts
             obj.transform.position = new Vector3((Constant.SizeFor1Box / 5) + x * Constant.SizeFor1Box, (Constant.SizeFor1Box / 5) + y * Constant.SizeFor1Box, 0);
 
             // set pos
-            pos = new int[2] { y, x };
+            pos = new int[2] { x, y };
 
             // add click event
             var colli = obj.AddComponent<BoxCollider2D>();
