@@ -9,7 +9,7 @@ namespace Assets._Scripts
 {
     class Util
     {
-        public static Piece GetPieceFromPieces(int y, int x)
+        public static Piece GetPieceFromPieces(int x, int y)
         {
             Debug.Log(Chess_Board.GetInstance.pieces.Count);
             Debug.Log(Chess_Board.GetInstance.pieces.FirstOrDefault(p => p.y == y && p.x == x) == null);

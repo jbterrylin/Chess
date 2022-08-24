@@ -13,7 +13,7 @@ namespace Assets._Scripts
         public GameObject obj = new();
         public int[] pos = new int[2];
 
-        public PossibleMove(int y, int x)
+        public PossibleMove(int x, int y)
         {
             // set obj
             var objTexture = Resources.Load("possible_pos") as Texture2D;

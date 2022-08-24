@@ -25,29 +25,40 @@ namespace Assets._Scripts.Pieces
             if (
                 ((this.obj.name.Contains(Constant.White) && this.y == 1) ||
                 (this.obj.name.Contains(Constant.Black) && this.y == 6)) &&
-                Util.GetPieceFromPieces(this.y + direction, this.x) == null &&
-                Util.GetPieceFromPieces(this.y + direction + direction, this.x) == null
+                Util.GetPieceFromPieces(this.x, this.y + direction) == null &&
+                Util.GetPieceFromPieces(this.x, this.y + direction + direction) == null
             )
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.y + direction + direction, this.x);
+                Chess_Board.GetInstance.AddPossibleMove(this.x, this.y + direction + direction);
             }
 
             // normal move
-            if (Util.GetPieceFromPieces(this.y + direction, this.x) == null)
+            if (Util.GetPieceFromPieces(this.x, this.y + direction) == null)
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.y + direction, this.x);
+                Chess_Board.GetInstance.AddPossibleMove(this.x, this.y + direction);
             }
 
             // take piece
             // TODO: still can take own piece
-            if (this.x < 7 && Util.GetPieceFromPieces(this.y + direction, this.x + 1) != null)
+            var isWhite = this.obj.name.Contains(Constant.White);
+            if (Util.GetPieceFromPieces(this.x + 1, this.y + direction) != null)
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.y + direction, this.x + 1);
+                if (isWhite && Util.GetPieceFromPieces(this.x + 1, this.y + direction).obj.name.Contains(Constant.Black) ||
+                    !isWhite && Util.GetPieceFromPieces(this.x + 1, this.y + direction).obj.name.Contains(Constant.White))
+                {
+                    Chess_Board.GetInstance.AddPossibleMove(this.x + 1, this.y + direction);
+                }
             }
-            if (this.x > 0 && Util.GetPieceFromPieces(this.y + direction, this.x - 1) != null)
+            if (Util.GetPieceFromPieces(this.x - 1, this.y + direction) != null)
             {
-                Chess_Board.GetInstance.AddPossibleMove(this.y + direction, this.x - 1);
+                if (isWhite && Util.GetPieceFromPieces(this.x - 1, this.y + direction).obj.name.Contains(Constant.Black) ||
+                    !isWhite && Util.GetPieceFromPieces(this.x - 1, this.y + direction).obj.name.Contains(Constant.White))
+                {
+                    Chess_Board.GetInstance.AddPossibleMove(this.x - 1, this.y + direction);
+                }
             }
+
+            // TODO: En passant
         }
     }
 }

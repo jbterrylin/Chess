@@ -11,7 +11,10 @@ namespace Assets._Scripts
     {
         public override void ShowPossibleMove()
         {
-
+            //for(int i=this.x; i<8; i++)
+            //{
+            //    Util.GetPieceFromPieces(this.y + direction, this.x)
+            //}
         }
     }
 }

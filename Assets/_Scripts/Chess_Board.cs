@@ -160,12 +160,12 @@ public class Chess_Board
         var newX = GameManager.Instance.moveToPos[0];
         var newY = GameManager.Instance.moveToPos[1];
 
-        var tmp = Util.GetPieceFromPieces(newY, newX);
+        var tmp = Util.GetPieceFromPieces(newX, newY);
         var killedPieceName = (tmp == null ? "" : tmp.obj.name);
         tmp?.ClearPiece();
         pieces.Remove(tmp);
 
-        tmp = Util.GetPieceFromPieces(oriY, oriX);
+        tmp = Util.GetPieceFromPieces(oriX, oriY);
         tmp.y = newY;
         tmp.x = newX;
         tmp.ChangePosition();
@@ -179,9 +179,9 @@ public class Chess_Board
         selectedOutline.SetActive(false);
     }
 
-    public void AddPossibleMove(int y, int x)
+    public void AddPossibleMove(int x, int y)
     {
-        possiblePosList.Add(new PossibleMove(y, x));
+        possiblePosList.Add(new PossibleMove(x, y));
     }
 
     public void ClearPossibleMove()
