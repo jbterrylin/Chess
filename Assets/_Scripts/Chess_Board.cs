@@ -122,7 +122,6 @@ public class Chess_Board
 
     public string CheckEventType(Piece piece)
     {
-        Debug.Log("CheckEventType");
         // set selectedOutline
         if (selectedOutline == null)
         {
@@ -145,7 +144,6 @@ public class Chess_Board
             !GameManager.Instance.isWhiteTurn)
         )
         {
-            Debug.Log("CheckEventType123");
             GameManager.Instance.chessSelectPos = new int[2] { piece.x, piece.y };
             return Constant.ShowPossible;
         } 
@@ -154,7 +152,6 @@ public class Chess_Board
 
     public void MoveChess()
     {
-        Debug.Log("MoveChess");
         var oriX = GameManager.Instance.chessSelectPos[0];
         var oriY = GameManager.Instance.chessSelectPos[1];
         var newX = GameManager.Instance.moveToPos[0];

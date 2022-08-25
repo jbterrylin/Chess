@@ -10,7 +10,25 @@ namespace Assets._Scripts.Pieces
     {
         public override void ShowPossibleMove()
         {
+            var isWhite = this.obj.name.Contains(Constant.White);
+            int[] dx = { -2, -1, 1, 2, -2, -1, 1, 2 };
+            int[] dy = { -1, -2, -2, -1, 1, 2, 2, 1 };
 
+            for(int i=0; i< dx.Length; i++)
+            {
+                var tmpx = this.x + dx[i];
+                var tmpy = this.y + dy[i];
+
+                if(tmpx >= 0 && tmpx < 8 && tmpy >= 0 && tmpy < 8)
+                {
+                    if (Util.GetPieceFromPieces(tmpx, tmpy) != null &&
+                    (isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black) ||
+                    !isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.White)))
+                        Chess_Board.GetInstance.AddPossibleMove(tmpx, tmpy);
+                    if (Util.GetPieceFromPieces(tmpx, tmpy) == null)
+                        Chess_Board.GetInstance.AddPossibleMove(tmpx, tmpy);
+                }
+            }
         }
     }
 }
