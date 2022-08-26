@@ -8,8 +8,9 @@ namespace Assets._Scripts.Pieces
 {
     class Knight : Piece
     {
-        public override void ShowPossibleMove()
+        public override List<int[]> GetPossibleMove()
         {
+            List<int[]> possibleMoves = new();
             var isWhite = this.obj.name.Contains(Constant.White);
             int[] dx = { -2, -1, 1, 2, -2, -1, 1, 2 };
             int[] dy = { -1, -2, -2, -1, 1, 2, 2, 1 };
@@ -24,11 +25,18 @@ namespace Assets._Scripts.Pieces
                     if (Util.GetPieceFromPieces(tmpx, tmpy) != null &&
                     (isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black) ||
                     !isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.White)))
-                        Chess_Board.GetInstance.AddPossibleMove(tmpx, tmpy);
+                        possibleMoves.Add(new int[2] { tmpx, tmpy });
                     if (Util.GetPieceFromPieces(tmpx, tmpy) == null)
-                        Chess_Board.GetInstance.AddPossibleMove(tmpx, tmpy);
+                        possibleMoves.Add(new int[2] { tmpx, tmpy });
                 }
             }
+
+            return possibleMoves;
+        }
+
+        public override bool CheckCheck(int x, int y)
+        {
+            return false;
         }
     }
 }

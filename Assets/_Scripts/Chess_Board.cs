@@ -172,8 +172,21 @@ public class Chess_Board
 
         GameManager.Instance.chessSelectPos = new int[2] { -1, -1 };
         GameManager.Instance.moveToPos = new int[2] { -1, -1 };
+        //GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
         ClearPossibleMove();
         selectedOutline.SetActive(false);
+    }
+
+    public bool CheckMoveValid(int x, int y)
+    {
+        // check all black chess can take white king if chess moved
+        foreach(var piece in pieces)
+        {
+            if(GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.Black) ||
+                !GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.White))
+            piece.CheckCheck(x, y);
+        }
+        return true;
     }
 
     public void AddPossibleMove(int x, int y)

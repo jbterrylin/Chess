@@ -9,8 +9,9 @@ namespace Assets._Scripts.Pieces
 {
     class Bishop : Piece
     {
-        public override void ShowPossibleMove()
+        public override List<int[]> GetPossibleMove()
         {
+            List<int[]> possibleMoves = new();
             var isWhite = this.obj.name.Contains(Constant.White);
             int[] dx = { -1, -1, 1, 1 };
             int[] dy = { -1, 1, -1, 1 };
@@ -29,13 +30,20 @@ namespace Assets._Scripts.Pieces
                         (isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black) ||
                         !isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.White)))
                     {
-                        Chess_Board.GetInstance.AddPossibleMove(tmpx, tmpy);
+                            possibleMoves.Add(new int[2] { tmpx, tmpy });
                         break;
                     }
                     else
                         break;
                 }
             }
+
+            return possibleMoves;
+        }
+
+        public override bool CheckCheck(int x, int y)
+        {
+            return false;
         }
     }
 }

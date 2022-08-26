@@ -67,13 +67,20 @@ namespace Assets._Scripts
             switch (Chess_Board.GetInstance.CheckEventType(this))
             {
                 case Constant.ShowPossible:
-                    ShowPossibleMove();
+                    var possibleMoves = GetPossibleMove();
+                    foreach (var possibleMove in possibleMoves)
+                    {
+                        Chess_Board.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1]);
+                    }
                     break;
                 case Constant.Nothing:
                     break;
             }
         }
 
-        public abstract void ShowPossibleMove();
+        public abstract List<int[]> GetPossibleMove();
+
+        public abstract bool CheckCheck(int x, int y);
+
     }
 }
