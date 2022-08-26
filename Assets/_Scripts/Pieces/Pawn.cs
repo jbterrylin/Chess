@@ -58,6 +58,20 @@ namespace Assets._Scripts.Pieces
             return possibleMoves;
         }
 
+        public override List<int[]> GetKillMove()
+        {
+            List<int[]> possibleMoves = new();
+            int direction = 0;
+            if (this.obj.name.Contains(Constant.White))
+                direction++;
+            else
+                direction--;
+            // lazy to filter if x - 1 == -1 and x + 1 == 8
+            possibleMoves.Add(new int[2] { this.x + 1, this.y + direction });
+            possibleMoves.Add(new int[2] { this.x - 1, this.y + direction });
+            return possibleMoves;
+        }
+
         public override bool CheckCheck(int x, int y)
         {
             int direction = 0;

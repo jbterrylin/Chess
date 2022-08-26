@@ -21,7 +21,6 @@ namespace Assets._Scripts.Pieces
             {
                 var tmpx = this.x + dx[di];
                 var tmpy = this.y + dy[di];
-                Debug.Log(tmpx + "." + tmpy);
 
                 if (tmpx >= 0 && tmpx < 8 && tmpy >= 0 && tmpy < 8)
                 {
@@ -34,7 +33,9 @@ namespace Assets._Scripts.Pieces
                 }
             }
 
+
             return possibleMoves;
+            
         }
 
         public override bool CheckCheck(int x, int y)
@@ -42,13 +43,29 @@ namespace Assets._Scripts.Pieces
             return false;
         }
 
-        public void isMoveToSuicide(int x, int y)
+        public override List<int[]> IsMoveToSuicide()
         {
             var isWhite = this.obj.name.Contains(Constant.White);
+
+            List<int[]> possibleMoves = new();
             foreach (var piece in Chess_Board.GetInstance.pieces)
-            {
-                
-            }
+                if (isWhite && piece.obj.name.Contains(Constant.Black) ||
+                !isWhite && piece.obj.name.Contains(Constant.White))
+                {
+                    possibleMoves.AddRange(piece.GetKillMove());
+                    possibleMoves = possibleMoves.
+                        Select(e =>
+                        new
+                        {
+                            x = e[0],
+                            y = e[1],
+                        }).
+                        Distinct().
+                        Select(e => new int[2] { e.x, e.y }).
+                        ToList();
+                }
+
+            return possibleMoves;
         }
     }
 }
