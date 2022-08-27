@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public bool isWhiteTurn = true;
     public int[] chessSelectPos;
     public int[] moveToPos;
-    public List<string> historyList = new();
+    public List<History> historyList = new();
     public Text history_scroll;
 
     void Start()
@@ -36,21 +36,24 @@ public class GameManager : MonoBehaviour
         _ = ChessBoard.GetInstance;
     }
 
-    public void AddToHistoryMove(string text, string status)
+    public void AddToHistoryMove(History history, string status)
     {
         if (status == Constant.CheckMate)
         {
+            historyList.Last().status = status;
             history_scroll.text = history_scroll.text.Insert(history_scroll.text.Length - 1, "#");
             Debug.Log("CheckMate");
         }
         else if (status == Constant.Check)
         {
+            historyList.Last().status = status;
             history_scroll.text = history_scroll.text.Insert(history_scroll.text.Length - 1, "+");
         }
-        else if (text != null)
+        else if (history != null)
         {
-            historyList.Add(text);
-            history_scroll.text += ("Move " + historyList.Count + "\n" + text + "\n");
+            history.move = historyList.Count + 1;
+            historyList.Add(history);
+            history_scroll.text += history.ToString() + "\n";
         }
     }
 }

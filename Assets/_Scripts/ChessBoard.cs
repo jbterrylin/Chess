@@ -182,9 +182,6 @@ public class ChessBoard
         oldPiece?.ClearPiece();
         movedPiece.ChangePosition();
 
-        // add history
-        GameManager.Instance.AddToHistoryMove(movedPiece.obj.name + "-(" + Util.IntToAlpha(oriX + 1) + oriY + ">" + Util.IntToAlpha(newX + 1) + newY + ")" + (killedPieceName != "" ? ("/" + killedPieceName) : ""), Constant.Move);
-
         // reset move related var and obj
         GameManager.Instance.chessSelectPos = new int[2] { -1, -1 };
         GameManager.Instance.moveToPos = new int[2] { -1, -1 };
@@ -197,6 +194,8 @@ public class ChessBoard
         checkingOutlineList.Clear();
         selectedOutline.SetActive(false);
 
+        // add history
+        GameManager.Instance.AddToHistoryMove(new History(movedPiece.obj.name, oriX, oriY, newX, newY, killedPieceName), Constant.Move);
         GameManager.Instance.AddToHistoryMove(null, GetMoveStatus());
 
         GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;

@@ -12,13 +12,17 @@ namespace Assets._Scripts
     public abstract class Piece
     {
         public GameObject obj = new();
-        public int y;
         public int x;
+        public int y;
+        public int initX;
+        public int initY;
 
         public void Instantiate(Texture2D texture, int y, int x)
         {
-            this.y = y;
+            this.initX = x;
+            this.initY = y;
             this.x = x;
+            this.y = y;
 
             // set SpriteRenderer
             SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
