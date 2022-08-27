@@ -59,7 +59,7 @@ namespace Assets._Scripts.Pieces
             var isWhite = this.obj.name.Contains(Constant.White);
 
             List<int[]> possibleMoves = new();
-            foreach (var piece in Chess_Board.GetInstance.pieces)
+            foreach (var piece in ChessBoard.GetInstance.pieces)
                 if (isWhite && piece.obj.name.Contains(Constant.Black) ||
                 !isWhite && piece.obj.name.Contains(Constant.White))
                 {

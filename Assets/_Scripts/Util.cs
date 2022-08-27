@@ -11,12 +11,12 @@ namespace Assets._Scripts
     {
         public static Piece GetPieceFromPieces(int x, int y)
         {
-            return Chess_Board.GetInstance.pieces.FirstOrDefault(p => p.y == y && p.x == x);
+            return ChessBoard.GetInstance.pieces.FirstOrDefault(p => p.y == y && p.x == x);
         }
 
         public static Piece GetPieceByObjName(string name)
         {
-            return Chess_Board.GetInstance.pieces.FirstOrDefault(p => p.obj.name == name);
+            return ChessBoard.GetInstance.pieces.FirstOrDefault(p => p.obj.name == name);
         }
 
         public static string IntToAlpha(int i)

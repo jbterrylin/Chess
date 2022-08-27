@@ -70,47 +70,5 @@ namespace Assets._Scripts.Pieces
             possibleMoves.Add(new int[2] { this.x - 1, this.y + direction });
             return possibleMoves;
         }
-
-        public override bool CheckCheck(int x, int y)
-        {
-            int direction = 0;
-            if (this.obj.name.Contains(Constant.White))
-                direction++;
-            else
-                direction--;
-
-            //if (!isKingMove)
-            //{
-                var isWhite = this.obj.name.Contains(Constant.White);
-                if (Util.GetPieceFromPieces(this.x + 1, this.y + direction) != null)
-                {
-                    if (isWhite && 
-                        Util.GetPieceFromPieces(this.x + 1, this.y + direction).obj.name.Contains(Constant.Black + "_" + Constant.King) ||
-                        !isWhite && 
-                        Util.GetPieceFromPieces(this.x + 1, this.y + direction).obj.name.Contains(Constant.White + "_" + Constant.King))
-                    {
-                        return true;
-                    }
-                }
-                if (Util.GetPieceFromPieces(this.x - 1, this.y + direction) != null)
-                {
-                    if (isWhite && 
-                        Util.GetPieceFromPieces(this.x - 1, this.y + direction).obj.name.Contains(Constant.Black + "_" + Constant.King) ||
-                        !isWhite && 
-                        Util.GetPieceFromPieces(this.x - 1, this.y + direction).obj.name.Contains(Constant.White + "_" + Constant.King))
-                    {
-                        return true;
-                    }
-                }
-            //} 
-            // no need because king cant walk to susuide
-            //else
-            //{
-                // king walk in 
-                //if(this.y + direction == y && (this.x + 1 == x || this.x - 1 == x))
-                //    return true;
-            //}
-            return false;
-        }
     }
 }

@@ -6,15 +6,15 @@ using Assets._Scripts.Pieces;
 using System;
 using System.Linq;
 
-public class Chess_Board
+public class ChessBoard
 {
-    private static Chess_Board instance = null;
-    public static Chess_Board GetInstance
+    private static ChessBoard instance = null;
+    public static ChessBoard GetInstance
     {
         get
         {
             if (instance == null)
-                instance = new Chess_Board();
+                instance = new ChessBoard();
             return instance;
         }
     }
@@ -27,7 +27,7 @@ public class Chess_Board
     public List<CheckingOutline> checkingOutlineList = new();
     public List<PossibleMove> possiblePosList = new();
 
-    public Chess_Board()
+    public ChessBoard()
     {
         // get texture2D
         for (int chessType = 0; chessType < Constant.ChessTypes.Length; chessType++)

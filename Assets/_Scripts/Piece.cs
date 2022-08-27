@@ -59,7 +59,7 @@ namespace Assets._Scripts
 
         public void OnClick()
         {
-            switch (Chess_Board.GetInstance.CheckEventType(this))
+            switch (ChessBoard.GetInstance.CheckEventType(this))
             {
                 case Constant.ShowPossible:
                     var possibleMoves = GetPossibleMove();
@@ -73,7 +73,7 @@ namespace Assets._Scripts
                     }
                     foreach (var possibleMove in possibleMoves)
                     {
-                        Chess_Board.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1]);
+                        ChessBoard.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1]);
                     }
                     break;
                 case Constant.Nothing:

@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         moveToPos = new int[2] { -1, -1 };
         history_scroll = GameObject.Find("Canvas/History_Move/Viewport/Content/Text").GetComponent<Text>();
 
-        _ = Chess_Board.GetInstance;
+        _ = ChessBoard.GetInstance;
     }
 
     public void AddToHistoryMove(string text, string status)

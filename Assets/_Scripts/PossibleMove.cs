@@ -40,7 +40,7 @@ namespace Assets._Scripts
         public void OnClick()
         {
             GameManager.Instance.moveToPos = new int[2] { pos[0], pos[1] };
-            Chess_Board.GetInstance.MoveChess();
+            ChessBoard.GetInstance.MoveChess();
         }
 
         public void Destroy()
