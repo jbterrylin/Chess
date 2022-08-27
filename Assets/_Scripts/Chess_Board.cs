@@ -198,7 +198,7 @@ public class Chess_Board
         checkingOutlineList.Clear();
         selectedOutline.SetActive(false);
 
-        //GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
+        GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
     }
 
     // check all enemy piece can take king if chess moved
@@ -210,7 +210,7 @@ public class Chess_Board
         {
             if (GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.Black) ||
                 !GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.White))
-                if (piece.GetKillPos().Where(kp => kp[0] == kingPos.x && kp[1] == kingPos.y).Count() > 0)
+                if (piece.GetPossibleMove().Where(kp => kp[0] == kingPos.x && kp[1] == kingPos.y).Count() > 0)
                 {
                     moveValid = false;
                     checkingOutlineList.Add(new CheckingOutline(piece.x, piece.y));

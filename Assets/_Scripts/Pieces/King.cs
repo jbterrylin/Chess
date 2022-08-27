@@ -33,9 +33,25 @@ namespace Assets._Scripts.Pieces
                 }
             }
 
-
             return possibleMoves;
-            
+        }
+
+        public override List<int[]> GetKillPos()
+        {
+            List<int[]> killPos = new();
+            int[] dx = { -1, 1, 0, 0, -1, -1, 1, 1 };
+            int[] dy = { 0, 0, -1, 1, -1, 1, -1, 1 };
+
+            for (int di = 0; di < dx.Length; di++)
+            {
+                var tmpx = this.x + dx[di];
+                var tmpy = this.y + dy[di];
+
+                if (tmpx >= 0 && tmpx < 8 && tmpy >= 0 && tmpy < 8)
+                    killPos.Add(new int[2] { tmpx, tmpy });
+            }
+
+            return killPos;
         }
 
         public override bool CheckCheck(int x, int y)
@@ -53,6 +69,12 @@ namespace Assets._Scripts.Pieces
                 !isWhite && piece.obj.name.Contains(Constant.White))
                 {
                     possibleMoves.AddRange(piece.GetKillPos());
+                    Debug.Log(piece.obj.name);
+                    foreach (var kp in piece.GetKillPos())
+                    {
+                        Debug.Log(kp[0] + "," + kp[1]);
+
+                    }
                     possibleMoves = possibleMoves.
                         Select(e =>
                         new

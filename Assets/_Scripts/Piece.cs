@@ -88,12 +88,16 @@ namespace Assets._Scripts
 
         public abstract List<int[]> GetPossibleMove();
 
-        // get the position that can get kill if enemy chess on there, basically only design for pawn or piece that move and kill is not in same space
+        // get the position that can get kill if enemy chess on there 
+        // eg: all posible move even that position have ally and enemy
+        // need to rewrite because GetPossibleMove not inlcude if
+        //      chess A and B is enemy chess
+        //      if chess A in chess B kill position
+        //      because both of them in same team, so chess B cant move to chess A position, so that position will not in GetPossibleMove
+        //      not in mean king can take chess A, but if take chess A = move to Chess B kill position, then cause error
+        //      error is not hard error, mean possible move signal will show on chess A, but after click move to chess A position will get block by ChessBoard.CheckMoveValid
         // this is for IsMoveToSuicide
-        public virtual List<int[]> GetKillPos()
-        {
-            return GetPossibleMove();
-        }
+        public abstract List<int[]> GetKillPos();
 
         // check move is check or not
         public abstract bool CheckCheck(int x, int y);

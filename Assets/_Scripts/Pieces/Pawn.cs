@@ -18,21 +18,20 @@ namespace Assets._Scripts.Pieces
             else
                 direction--;
 
-            // charge
-            if (
-                ((this.obj.name.Contains(Constant.White) && this.y == 1) ||
-                (this.obj.name.Contains(Constant.Black) && this.y == 6)) &&
-                Util.GetPieceFromPieces(this.x, this.y + direction) == null &&
-                Util.GetPieceFromPieces(this.x, this.y + direction + direction) == null
-            )
-            {
-                possibleMoves.Add(new int[2]{ this.x, this.y + direction + direction});
-            }
-
             // normal move
             if (Util.GetPieceFromPieces(this.x, this.y + direction) == null)
             {
                 possibleMoves.Add(new int[2] { this.x, this.y + direction });
+
+                // charge
+                if (
+                    ((this.obj.name.Contains(Constant.White) && this.y == 1) ||
+                    (this.obj.name.Contains(Constant.Black) && this.y == 6)) &&
+                    Util.GetPieceFromPieces(this.x, this.y + direction + direction) == null
+                )
+                {
+                    possibleMoves.Add(new int[2] { this.x, this.y + direction + direction });
+                }
             }
 
             // take piece
