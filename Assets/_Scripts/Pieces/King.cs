@@ -54,11 +54,6 @@ namespace Assets._Scripts.Pieces
             return killPos;
         }
 
-        public override bool CheckCheck(int x, int y)
-        {
-            return false;
-        }
-
         public override List<int[]> PosCanSuicide()
         {
             var isWhite = this.obj.name.Contains(Constant.White);

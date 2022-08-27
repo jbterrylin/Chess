@@ -59,11 +59,6 @@ namespace Assets._Scripts
 
         public void OnClick()
         {
-            if (!obj.TryGetComponent<SpriteRenderer>(out _))
-            {
-                return;
-            }
-            
             switch (Chess_Board.GetInstance.CheckEventType(this))
             {
                 case Constant.ShowPossible:
@@ -98,9 +93,6 @@ namespace Assets._Scripts
         //      error is not hard error, mean possible move signal will show on chess A, but after click move to chess A position will get block by ChessBoard.CheckMoveValid
         // this is for IsMoveToSuicide
         public abstract List<int[]> GetKillPos();
-
-        // check move is check or not
-        public abstract bool CheckCheck(int x, int y);
 
         // for king move, prevent suicide move
         // actually can put function content to here, but i put in king class

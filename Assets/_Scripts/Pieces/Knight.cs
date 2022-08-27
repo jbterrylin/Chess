@@ -51,10 +51,5 @@ namespace Assets._Scripts.Pieces
 
             return killPos;
         }
-
-        public override bool CheckCheck(int x, int y)
-        {
-            return false;
-        }
     }
 }
