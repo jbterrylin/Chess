@@ -59,7 +59,7 @@ namespace Assets._Scripts.Pieces
             return false;
         }
 
-        public override List<int[]> IsMoveToSuicide()
+        public override List<int[]> PosCanSuicide()
         {
             var isWhite = this.obj.name.Contains(Constant.White);
 
@@ -69,12 +69,11 @@ namespace Assets._Scripts.Pieces
                 !isWhite && piece.obj.name.Contains(Constant.White))
                 {
                     possibleMoves.AddRange(piece.GetKillPos());
-                    Debug.Log(piece.obj.name + " " + piece.x + "," + piece.y);
-                    foreach (var kp in piece.GetKillPos())
-                    {
-                        Debug.Log(kp[0] + "," + kp[1]);
-
-                    }
+                    //Debug.Log(piece.obj.name + " " + piece.x + "," + piece.y);
+                    //foreach (var kp in piece.GetKillPos())
+                    //{
+                    //    Debug.Log(kp[0] + "," + kp[1]);
+                    //}
                     possibleMoves = possibleMoves.
                         Select(e =>
                         new

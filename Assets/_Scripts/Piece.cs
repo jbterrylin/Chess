@@ -71,7 +71,7 @@ namespace Assets._Scripts
                     // if move king, need to filter suicide move
                     if (this.obj.name.Contains(Constant.King))
                     {
-                        var enemyRulePos = IsMoveToSuicide();
+                        var enemyRulePos = PosCanSuicide();
                         possibleMoves = possibleMoves
                             .Where(pm => !enemyRulePos.Any(erp => erp[0] == pm[0] && erp[1] == pm[1]))
                             .ToList();
@@ -103,7 +103,8 @@ namespace Assets._Scripts
         public abstract bool CheckCheck(int x, int y);
 
         // for king move, prevent suicide move
-        public virtual List<int[]> IsMoveToSuicide()
+        // actually can put function content to here, but i put in king class
+        public virtual List<int[]> PosCanSuicide()
         {
             return null;
         }

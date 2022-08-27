@@ -6,6 +6,7 @@ using System.Text;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
+using Assets._Scripts;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,9 +36,17 @@ public class GameManager : MonoBehaviour
         _ = Chess_Board.GetInstance;
     }
 
-    public void AddToHistoryMove()
+    public void AddToHistoryMove(string text, string status)
     {
         Text myText = history_scroll.GetComponent<Text>();
-        myText.text += "Move " + historyList.Count + "\n" + historyList.Last() + "\n";
+        if (status == Constant.CheckMate)
+        {
+            myText.text = myText.text.Insert(myText.text.Length - 1, "#");
+        } 
+        else
+        {
+            Instance.historyList.Add(text);
+            myText.text += "Move " + historyList.Count + "\n" + historyList.Last() + "\n";
+        }
     }
 }

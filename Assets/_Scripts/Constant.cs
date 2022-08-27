@@ -10,14 +10,18 @@ namespace Assets._Scripts
     {
         public static readonly int[,] ChessBoardInit = { 
             { 2,3,4,5,6,4,3,2 }, // white
-            { 1,1,1,0,1,0,1,1 }, // white
-            { 0,0,0,3,0,0,0,0 },
-            { 0,0,0,0,0,0,0,5 },
+            { 1,1,1,1,1,1,1,1 }, // white
+            { 0,0,0,0,0,0,0,0 },
+            { 0,0,0,0,0,0,0,0 },
             { 0,0,0,0,0,0,0,0 },
             { 0,0,0,0,0,0,0,0 },
             { 1,1,1,1,1,1,1,1 }, // black
             { 2,3,4,5,6,4,3,2 }, // black
         };
+
+        public static readonly string Move = "Move";
+        public static readonly string Check = "Check";
+        public static readonly string CheckMate = "CheckMate";
 
         public static readonly string White = "white";
         public static readonly string Black = "black";
