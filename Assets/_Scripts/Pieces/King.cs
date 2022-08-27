@@ -69,7 +69,7 @@ namespace Assets._Scripts.Pieces
                 !isWhite && piece.obj.name.Contains(Constant.White))
                 {
                     possibleMoves.AddRange(piece.GetKillPos());
-                    Debug.Log(piece.obj.name);
+                    Debug.Log(piece.obj.name + " " + piece.x + "," + piece.y);
                     foreach (var kp in piece.GetKillPos())
                     {
                         Debug.Log(kp[0] + "," + kp[1]);

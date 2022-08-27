@@ -61,8 +61,7 @@ namespace Assets._Scripts
                         else if (isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black + "_" + Constant.King) ||
                             !isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.White + "_" + Constant.King))
                             killPos.Add(new int[2] { tmpx, tmpy });
-                        else if (isWhite && !Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black) ||
-                            !isWhite && !Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.White))
+                        else
                         {
                             killPos.Add(new int[2] { tmpx, tmpy });
                             break;
