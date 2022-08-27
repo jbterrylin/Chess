@@ -52,7 +52,7 @@ namespace Assets._Scripts.Pieces
                 if (isWhite && piece.obj.name.Contains(Constant.Black) ||
                 !isWhite && piece.obj.name.Contains(Constant.White))
                 {
-                    possibleMoves.AddRange(piece.GetKillMove());
+                    possibleMoves.AddRange(piece.GetKillPos());
                     possibleMoves = possibleMoves.
                         Select(e =>
                         new

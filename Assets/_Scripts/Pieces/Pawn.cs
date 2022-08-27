@@ -58,7 +58,7 @@ namespace Assets._Scripts.Pieces
             return possibleMoves;
         }
 
-        public override List<int[]> GetKillMove()
+        public override List<int[]> GetKillPos()
         {
             List<int[]> possibleMoves = new();
             int direction = 0;

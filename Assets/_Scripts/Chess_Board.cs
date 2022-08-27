@@ -24,6 +24,7 @@ public class Chess_Board
     public GameManager gm;
 
     public GameObject selectedOutline;
+    public List<CheckingOutline> checkingOutlineList = new();
     public List<PossibleMove> possiblePosList = new();
 
     public Chess_Board()
@@ -118,20 +119,21 @@ public class Chess_Board
                 }
             }
         }
-    }
 
-    public string CheckEventType(Piece piece)
-    {
         // set selectedOutline
-        if (selectedOutline == null)
         {
             selectedOutline = new();
             var selectedOutlineTexture = Resources.Load("selected_outline") as Texture2D;
             SpriteRenderer renderer = selectedOutline.AddComponent<SpriteRenderer>();
             renderer.sprite = Sprite.Create(selectedOutlineTexture, new Rect(0, 0, selectedOutlineTexture.width, selectedOutlineTexture.height), Vector2.zero);
-            renderer.sortingLayerName = "Chess";
+            renderer.sortingLayerName = Constant.ChessLayer;
             selectedOutline.transform.localScale = new Vector3(0.15f, 0.15f, 1);
+            selectedOutline.SetActive(false);
         }
+    }
+
+    public string CheckEventType(Piece piece)
+    {
         selectedOutline.SetActive(true);
         selectedOutline.transform.position = new Vector3(piece.x * Constant.SizeFor1Box, piece.y * Constant.SizeFor1Box, 0);
 
@@ -157,36 +159,64 @@ public class Chess_Board
         var newX = GameManager.Instance.moveToPos[0];
         var newY = GameManager.Instance.moveToPos[1];
 
-        var tmp = Util.GetPieceFromPieces(newX, newY);
-        var killedPieceName = (tmp == null ? "" : tmp.obj.name);
-        tmp?.ClearPiece();
-        pieces.Remove(tmp);
+        // remove and add back is not meaningless, if not cant detect player take the piece that check their king
+        var oldPiece = Util.GetPieceFromPieces(newX, newY);
+        pieces.Remove(oldPiece);
 
-        tmp = Util.GetPieceFromPieces(oriX, oriY);
-        tmp.y = newY;
-        tmp.x = newX;
-        tmp.ChangePosition();
+        var movedPiece = Util.GetPieceFromPieces(oriX, oriY);
+        movedPiece.x = newX;
+        movedPiece.y = newY;
 
-        GameManager.Instance.historyList.Add(tmp.obj.name + "-(" + Util.IntToAlpha(oriX+1)+ oriY + ">" + Util.IntToAlpha(newX + 1) + newY + ")" + (killedPieceName != "" ? ("/" + killedPieceName) : ""));
+        if (!CheckMoveValid())
+        {
+            GameManager.Instance.moveToPos = new int[2] { -1, -1 };
+            movedPiece.x = oriX;
+            movedPiece.y = oriY;
+            if (oldPiece != null)
+                pieces.Add(oldPiece);
+            return;
+        }
+
+        var killedPieceName = (oldPiece == null ? "" : oldPiece.obj.name);
+
+        oldPiece?.ClearPiece();
+        movedPiece.ChangePosition();
+
+        // add history
+        GameManager.Instance.historyList.Add(movedPiece.obj.name + "-(" + Util.IntToAlpha(oriX+1)+ oriY + ">" + Util.IntToAlpha(newX + 1) + newY + ")" + (killedPieceName != "" ? ("/" + killedPieceName) : ""));
         GameManager.Instance.AddToHistoryMove();
 
+        // reset move related var and obj
         GameManager.Instance.chessSelectPos = new int[2] { -1, -1 };
         GameManager.Instance.moveToPos = new int[2] { -1, -1 };
-        //GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
         ClearPossibleMove();
+        if (checkingOutlineList.Count != 0)
+        foreach (var checkingOutline in checkingOutlineList)
+        {
+            checkingOutline.Destroy();
+        }
+        checkingOutlineList.Clear();
         selectedOutline.SetActive(false);
+
+        //GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
     }
 
-    public bool CheckMoveValid(int x, int y)
+    // check all enemy piece can take king if chess moved
+    public bool CheckMoveValid()
     {
-        // check all black chess can take white king if chess moved
+        var moveValid = true;
+        Piece kingPos = (GameManager.Instance.isWhiteTurn ? Util.GetPieceByObjName(Constant.White + "_" + Constant.King) : Util.GetPieceByObjName(Constant.Black + "_" + Constant.King));
         foreach(var piece in pieces)
         {
-            if(GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.Black) ||
+            if (GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.Black) ||
                 !GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.White))
-            piece.CheckCheck(x, y);
+                if (piece.GetKillPos().Where(kp => kp[0] == kingPos.x && kp[1] == kingPos.y).Count() > 0)
+                {
+                    moveValid = false;
+                    checkingOutlineList.Add(new CheckingOutline(piece.x, piece.y));
+                }
         }
-        return true;
+        return moveValid;
     }
 
     public void AddPossibleMove(int x, int y)

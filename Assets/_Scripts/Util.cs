@@ -14,6 +14,11 @@ namespace Assets._Scripts
             return Chess_Board.GetInstance.pieces.FirstOrDefault(p => p.y == y && p.x == x);
         }
 
+        public static Piece GetPieceByObjName(string name)
+        {
+            return Chess_Board.GetInstance.pieces.FirstOrDefault(p => p.obj.name == name);
+        }
+
         public static string IntToAlpha(int i)
         {
             bool isCaps = true;

@@ -39,7 +39,6 @@ namespace Assets._Scripts
 
         public void OnClick()
         {
-            Chess_Board.GetInstance.CheckMoveValid(pos[0], pos[1]);
             GameManager.Instance.moveToPos = new int[2] { pos[0], pos[1] };
             Chess_Board.GetInstance.MoveChess();
         }

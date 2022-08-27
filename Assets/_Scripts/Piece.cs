@@ -68,20 +68,10 @@ namespace Assets._Scripts
             {
                 case Constant.ShowPossible:
                     var possibleMoves = GetPossibleMove();
-                    foreach (var possibleMove in possibleMoves)
-                    {
-                        Debug.Log(possibleMove[0] + "," + possibleMove[1]);
-                    }
-                    Debug.Log("==========");
-
                     // if move king, need to filter suicide move
                     if (this.obj.name.Contains(Constant.King))
                     {
                         var enemyRulePos = IsMoveToSuicide();
-                        foreach (var possibleMove in enemyRulePos)
-                        {
-                            Debug.Log(possibleMove[0] + "," + possibleMove[1]);
-                        }
                         possibleMoves = possibleMoves
                             .Where(pm => !enemyRulePos.Any(erp => erp[0] == pm[0] && erp[1] == pm[1]))
                             .ToList();
@@ -100,7 +90,7 @@ namespace Assets._Scripts
 
         // get the position that can get kill if enemy chess on there, basically only design for pawn or piece that move and kill is not in same space
         // this is for IsMoveToSuicide
-        public virtual List<int[]> GetKillMove()
+        public virtual List<int[]> GetKillPos()
         {
             return GetPossibleMove();
         }
