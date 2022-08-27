@@ -197,10 +197,7 @@ public class Chess_Board
         checkingOutlineList.Clear();
         selectedOutline.SetActive(false);
 
-        if (CheckCheckMate())
-        {
-            GameManager.Instance.AddToHistoryMove("", Constant.CheckMate);
-        }
+        GameManager.Instance.AddToHistoryMove(null, GetMoveStatus());
 
         GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
     }
@@ -224,8 +221,8 @@ public class Chess_Board
     }
 
 
-    // check enemy king get checkmated or not
-    public bool CheckCheckMate()
+    // check enemy king get checkmated or not, also return status where Check, CheckMate, or juz normal move
+    public string GetMoveStatus()
     {
         Piece king = (GameManager.Instance.isWhiteTurn ? Util.GetPieceByObjName(Constant.Black + "_" + Constant.King) : Util.GetPieceByObjName(Constant.White + "_" + Constant.King));
         var possibleMoves = king.GetPossibleMove();
@@ -240,7 +237,6 @@ public class Chess_Board
             // if king is no where to move
             if (possibleMoves.Count == 0)
             {
-                Debug.Log("no pos move");
                 List<int[]> checkingPiecePos = new();
                 foreach (var piece in pieces)
                 {
@@ -256,7 +252,7 @@ public class Chess_Board
                 // GetPossibleMove already prevent king take the checking piece that protect by his ally
                 if (checkingPiecePos.Count > 1)
                 {
-                    return true;
+                    return Constant.CheckMate;
                 }
                 else if (checkingPiecePos.Count == 1)
                 {
@@ -266,15 +262,16 @@ public class Chess_Board
                             !GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.White))
                             if (!(piece.obj.name.Contains(Constant.King)) && piece.GetPossibleMove().Where(kp => kp[0] == checkingPiecePos[0][0] && kp[1] == checkingPiecePos[0][1]).Count() > 0)
                             {
-                                return false;
+                                return Constant.Check;
                             }
                     }
-                    return true;
+                    return Constant.CheckMate;
                 }
             }
+            return Constant.Check;
         }
 
-        return false;
+        return Constant.Move;
     }
 
     public void AddPossibleMove(int x, int y)
