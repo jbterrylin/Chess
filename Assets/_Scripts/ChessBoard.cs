@@ -223,7 +223,7 @@ public class ChessBoard
         {
             if (GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.Black) ||
                 !GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.White))
-                if (piece.GetPossibleMove().Where(kp => kp[0] == king.x && kp[1] == king.y).Count() > 0)
+                if (piece.GetPossibleMove().Where(kp => kp.x == king.x && kp.y == king.y).Count() > 0)
                 {
                     moveValid = false;
                     checkingOutlineList.Add(new CheckingOutline(piece.x, piece.y));
@@ -244,7 +244,7 @@ public class ChessBoard
         if (enemyRulePos.Any(erp => erp[0] == king.x && erp[1] == king.y))
         {
             possibleMoves = possibleMoves
-                .Where(pm => !enemyRulePos.Any(erp => erp[0] == pm[0] && erp[1] == pm[1]))
+                .Where(pm => !enemyRulePos.Any(erp => erp[0] == pm.x && erp[1] == pm.y))
                 .ToList();
             // if king is no where to move
             if (possibleMoves.Count == 0)
@@ -254,7 +254,7 @@ public class ChessBoard
                 {
                     if (GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.White) ||
                         !GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.Black))
-                        if (piece.GetPossibleMove().Where(kp => kp[0] == king.x && kp[1] == king.y).Count() > 0)
+                        if (piece.GetPossibleMove().Where(kp => kp.x == king.x && kp.y == king.y).Count() > 0)
                         {
                             checkingPiecePos.Add(new int[2] { piece.x, piece.y });
                         }
@@ -272,7 +272,7 @@ public class ChessBoard
                     {
                         if (GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.Black) ||
                             !GameManager.Instance.isWhiteTurn == piece.obj.name.Contains(Constant.White))
-                            if (!(piece.obj.name.Contains(Constant.King)) && piece.GetPossibleMove().Where(kp => kp[0] == checkingPiecePos[0][0] && kp[1] == checkingPiecePos[0][1]).Count() > 0)
+                            if (!(piece.obj.name.Contains(Constant.King)) && piece.GetPossibleMove().Where(kp => kp.x == checkingPiecePos[0][0] && kp.y == checkingPiecePos[0][1]).Count() > 0)
                             {
                                 return Constant.Check;
                             }
@@ -286,14 +286,9 @@ public class ChessBoard
         return Constant.Move;
     }
 
-    public void AddPossibleMove(int x, int y)
+    public void AddPossibleMove(PossibleMove possibleMove)
     {
-        possiblePosList.Add(new PossibleMove(x, y));
-    }
-
-    public void AddPossibleMove(int x, int y, string MoveType)
-    {
-        possiblePosList.Add(new PossibleMove(x, y, MoveType));
+        possiblePosList.Add(possibleMove);
     }
 
     public void ClearPossibleMove()

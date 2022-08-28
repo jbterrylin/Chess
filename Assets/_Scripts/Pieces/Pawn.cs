@@ -9,9 +9,9 @@ namespace Assets._Scripts.Pieces
 {
     class Pawn : Piece
     {
-        public override List<int[]> GetPossibleMove()
+        public override List<PossibleMove> GetPossibleMove()
         {
-            List<int[]> possibleMoves= new();
+            List<PossibleMove> possibleMoves= new();
             int direction = 0;
             if (this.obj.name.Contains(Constant.White))
                 direction++;
@@ -21,7 +21,7 @@ namespace Assets._Scripts.Pieces
             // normal move
             if (Util.GetPieceFromPieces(this.x, this.y + direction) == null)
             {
-                possibleMoves.Add(new int[2] { this.x, this.y + direction });
+                possibleMoves.Add(new PossibleMove(this.x, this.y + direction));
 
                 // charge
                 if (
@@ -30,7 +30,7 @@ namespace Assets._Scripts.Pieces
                     Util.GetPieceFromPieces(this.x, this.y + direction + direction) == null
                 )
                 {
-                    possibleMoves.Add(new int[2] { this.x, this.y + direction + direction });
+                    possibleMoves.Add(new PossibleMove(this.x, this.y + direction + direction));
                 }
             }
 
@@ -45,12 +45,13 @@ namespace Assets._Scripts.Pieces
                     if (isWhite && Util.GetPieceFromPieces(this.x + dx, this.y + direction).obj.name.Contains(Constant.Black) ||
                         !isWhite && Util.GetPieceFromPieces(this.x + dx, this.y + direction).obj.name.Contains(Constant.White))
                     {
-                        possibleMoves.Add(new int[2] { this.x + dx, this.y + direction });
+                        possibleMoves.Add(new PossibleMove(this.x + dx, this.y + direction ));
                     }
                 }
             }
 
-            if(GameManager.Instance.historyList.Count > 0)
+            // En passant
+            if (GameManager.Instance.historyList.Count > 0)
             {
                 var lastMove = GameManager.Instance.historyList.Last();
                 foreach (int dx in dxs)
@@ -61,7 +62,7 @@ namespace Assets._Scripts.Pieces
                             !isWhite && Util.GetPieceFromPieces(this.x + dx, this.y).obj.name.Contains(Constant.White + "_" + Constant.Pawn))
                         {
                             if (lastMove.newX == this.x + dx && lastMove.newY == this.y && lastMove.oriY == this.y + direction + direction && lastMove.movePiece.Contains(Constant.Pawn))
-                                possibleMoves.Add(new int[2] { this.x + dx, this.y + direction });
+                                possibleMoves.Add(new PossibleMove(this.x + dx, this.y + direction, Constant.EnPassant ));
                         }
                     }
                 }

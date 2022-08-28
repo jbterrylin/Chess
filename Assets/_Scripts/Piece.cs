@@ -72,20 +72,13 @@ namespace Assets._Scripts
                     {
                         var enemyRulePos = PosCanSuicide();
                         possibleMoves = possibleMoves
-                            .Where(pm => !enemyRulePos.Any(erp => erp[0] == pm[0] && erp[1] == pm[1]))
+                            .Where(pm => !enemyRulePos.Any(erp => erp[0] == pm.x && erp[1] == pm.y))
                             .ToList();
                     }
                     foreach (var possibleMove in possibleMoves)
                     {
-                        // En passant
-                        if (this.obj.name.Contains(Constant.Pawn) &&
-                            this.x != possibleMove[0] &&
-                            Util.GetPieceFromPieces(possibleMove[0], possibleMove[1]) == null)
-                        {
-                            ChessBoard.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1], Constant.EnPassant);
-                        } 
-                        else
-                            ChessBoard.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1]);
+                        possibleMove.ToScene();
+                        ChessBoard.GetInstance.AddPossibleMove(possibleMove);
                     }
                     break;
                 case Constant.Nothing:
@@ -93,7 +86,7 @@ namespace Assets._Scripts
             }
         }
 
-        public abstract List<int[]> GetPossibleMove();
+        public abstract List<PossibleMove> GetPossibleMove();
 
         // get the position that can get kill if enemy chess on there 
         // eg: all posible move even that position have ally and enemy

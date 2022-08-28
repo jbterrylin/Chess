@@ -9,9 +9,9 @@ namespace Assets._Scripts
 {
     class Rook : Piece
     {
-        public override List<int[]> GetPossibleMove()
+        public override List<PossibleMove> GetPossibleMove()
         {
-            List<int[]> possibleMoves = new();
+            List<PossibleMove> possibleMoves = new();
             var isWhite = this.obj.name.Contains(Constant.White);
             int[] dx = { -1, 1, 0, 0 };
             int[] dy = { 0, 0, -1, 1 };
@@ -25,11 +25,11 @@ namespace Assets._Scripts
                 if (tmpx >= 0 && tmpx < 8 && tmpy >= 0 && tmpy < 8)
                 {
                     if (Util.GetPieceFromPieces(tmpx, tmpy) == null)
-                            possibleMoves.Add(new int[2] { tmpx, tmpy });
+                            possibleMoves.Add(new PossibleMove ( tmpx, tmpy ));
                     else if (isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black) ||
                         !isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.White))
                     {
-                        possibleMoves.Add(new int[2] { tmpx, tmpy });
+                        possibleMoves.Add(new PossibleMove ( tmpx, tmpy ));
                         break;
                     }
                     else
@@ -37,7 +37,6 @@ namespace Assets._Scripts
                 }
             }
 
-            // TODO: castling
             return possibleMoves;
         }
 

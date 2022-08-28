@@ -11,10 +11,24 @@ namespace Assets._Scripts
     public class PossibleMove
     {
         public GameObject obj = new();
-        public int[] pos = new int[2];
+        public int x;
+        public int y;
         public string moveType;
 
-        public void Set(int x, int y)
+        public PossibleMove(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public PossibleMove(int x, int y, string moveType)
+        {
+            this.x = x;
+            this.y = y;
+            this.moveType = moveType;
+        }
+
+        public void ToScene()
         {
             // set obj
             var objTexture = Resources.Load("possible_pos") as Texture2D;
@@ -24,8 +38,6 @@ namespace Assets._Scripts
             obj.transform.localScale = new Vector3(0.15f, 0.15f, 1);
             obj.transform.position = new Vector3((Constant.SizeFor1Box / 5) + x * Constant.SizeFor1Box, (Constant.SizeFor1Box / 5) + y * Constant.SizeFor1Box, 0);
 
-            // set pos
-            pos = new int[2] { x, y };
 
             // add click event
             var colli = obj.AddComponent<BoxCollider2D>();
@@ -38,20 +50,9 @@ namespace Assets._Scripts
             eventTrigger1.triggers.Add(entry);
         }
 
-        public PossibleMove(int x, int y)
-        {
-            Set(x, y);
-        }
-
-        public PossibleMove(int x, int y, string moveType)
-        {
-            Set(x, y);
-            this.moveType = moveType;
-        }
-
         public void OnClick()
         {
-            GameManager.Instance.moveToPos = new int[2] { pos[0], pos[1] };
+            GameManager.Instance.moveToPos = new int[2] { x, y };
             ChessBoard.GetInstance.MoveChess(moveType);
         }
 
