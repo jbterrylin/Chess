@@ -19,6 +19,9 @@ public class ChessBoard
         }
     }
 
+    public int[] chessSelectPos;
+    public int[] moveToPos;
+
     public readonly List<Piece> pieces = new();
     readonly Dictionary<string, Texture2D[]> sprites = new();
     public GameManager gm;
@@ -29,6 +32,9 @@ public class ChessBoard
 
     public ChessBoard()
     {
+        chessSelectPos = new int[2] { -1, -1 };
+        moveToPos = new int[2] { -1, -1 };
+
         // get texture2D
         for (int chessType = 0; chessType < Constant.ChessTypes.Length; chessType++)
         {
@@ -146,7 +152,7 @@ public class ChessBoard
             !GameManager.Instance.isWhiteTurn)
         )
         {
-            GameManager.Instance.chessSelectPos = new int[2] { piece.x, piece.y };
+            chessSelectPos = new int[2] { piece.x, piece.y };
             return Constant.ShowPossible;
         } 
         return Constant.Nothing;
@@ -156,10 +162,10 @@ public class ChessBoard
     {
         var moveType = possibleMove.moveType;
 
-        var oriX = GameManager.Instance.chessSelectPos[0];
-        var oriY = GameManager.Instance.chessSelectPos[1];
-        var newX = GameManager.Instance.moveToPos[0];
-        var newY = GameManager.Instance.moveToPos[1];
+        var oriX = chessSelectPos[0];
+        var oriY = chessSelectPos[1];
+        var newX = moveToPos[0];
+        var newY = moveToPos[1];
 
         // remove and add back is not meaningless, if not cant detect player take the piece that check their king
         var oldPiece = Util.GetPieceFromPieces(newX, newY);
@@ -194,7 +200,7 @@ public class ChessBoard
 
             movedPiece.x = oriX;
             movedPiece.y = oriY;
-            GameManager.Instance.moveToPos = new int[2] { -1, -1 };
+            moveToPos = new int[2] { -1, -1 };
 
             return;
         }
@@ -209,8 +215,8 @@ public class ChessBoard
         movedPiece.ChangePosition();
 
         // reset move related var and obj
-        GameManager.Instance.chessSelectPos = new int[2] { -1, -1 };
-        GameManager.Instance.moveToPos = new int[2] { -1, -1 };
+        chessSelectPos = new int[2] { -1, -1 };
+        moveToPos = new int[2] { -1, -1 };
         ClearPossibleMove();
         if (checkingOutlineList.Count != 0)
         foreach (var checkingOutline in checkingOutlineList)

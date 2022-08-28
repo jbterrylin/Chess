@@ -22,15 +22,11 @@ public class GameManager : MonoBehaviour
     }
 
     public bool isWhiteTurn = true;
-    public int[] chessSelectPos;
-    public int[] moveToPos;
     public List<History> historyList = new();
     public Text history_scroll;
 
     void Start()
     {
-        chessSelectPos = new int[2] { -1, -1 };
-        moveToPos = new int[2] { -1, -1 };
         history_scroll = GameObject.Find("Canvas/History_Move/Viewport/Content/Text").GetComponent<Text>();
 
         _ = ChessBoard.GetInstance;

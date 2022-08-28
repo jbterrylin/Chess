@@ -61,7 +61,7 @@ namespace Assets._Scripts
 
         public void OnClick()
         {
-            GameManager.Instance.moveToPos = new int[2] { x, y };
+            ChessBoard.GetInstance.moveToPos = new int[2] { x, y };
             ChessBoard.GetInstance.MoveChess(this);
         }
 
