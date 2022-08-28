@@ -19,6 +19,9 @@ namespace Assets._Scripts
             { 2,3,4,5,6,4,3,2 }, // black
         };
 
+        public static readonly string EnPassant = "EnPassant";
+        public static readonly string Castling = "Castling";
+
         public static readonly string Move = "Move";
         public static readonly string Check = "Check";
         public static readonly string CheckMate = "CheckMate";

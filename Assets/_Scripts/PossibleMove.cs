@@ -12,8 +12,9 @@ namespace Assets._Scripts
     {
         public GameObject obj = new();
         public int[] pos = new int[2];
+        public string moveType;
 
-        public PossibleMove(int x, int y)
+        public void Set(int x, int y)
         {
             // set obj
             var objTexture = Resources.Load("possible_pos") as Texture2D;
@@ -37,10 +38,21 @@ namespace Assets._Scripts
             eventTrigger1.triggers.Add(entry);
         }
 
+        public PossibleMove(int x, int y)
+        {
+            Set(x, y);
+        }
+
+        public PossibleMove(int x, int y, string moveType)
+        {
+            Set(x, y);
+            this.moveType = moveType;
+        }
+
         public void OnClick()
         {
             GameManager.Instance.moveToPos = new int[2] { pos[0], pos[1] };
-            ChessBoard.GetInstance.MoveChess();
+            ChessBoard.GetInstance.MoveChess(moveType);
         }
 
         public void Destroy()

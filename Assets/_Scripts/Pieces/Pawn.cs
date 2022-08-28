@@ -34,29 +34,42 @@ namespace Assets._Scripts.Pieces
                 }
             }
 
-            // take piece
+            var dxs = new int[2] { -1, +1 };
+
             var isWhite = this.obj.name.Contains(Constant.White);
-            if (Util.GetPieceFromPieces(this.x + 1, this.y + direction) != null)
+            // take piece
+            foreach (int dx in dxs)
             {
-                if (isWhite && Util.GetPieceFromPieces(this.x + 1, this.y + direction).obj.name.Contains(Constant.Black) ||
-                    !isWhite && Util.GetPieceFromPieces(this.x + 1, this.y + direction).obj.name.Contains(Constant.White))
+                if (Util.GetPieceFromPieces(this.x + dx, this.y + direction) != null)
                 {
-                    possibleMoves.Add(new int[2] { this.x + 1, this.y + direction });
-                }
-            }
-            if (Util.GetPieceFromPieces(this.x - 1, this.y + direction) != null)
-            {
-                if (isWhite && Util.GetPieceFromPieces(this.x - 1, this.y + direction).obj.name.Contains(Constant.Black) ||
-                    !isWhite && Util.GetPieceFromPieces(this.x - 1, this.y + direction).obj.name.Contains(Constant.White))
-                {
-                    possibleMoves.Add(new int[2] { this.x - 1, this.y + direction });
+                    if (isWhite && Util.GetPieceFromPieces(this.x + dx, this.y + direction).obj.name.Contains(Constant.Black) ||
+                        !isWhite && Util.GetPieceFromPieces(this.x + dx, this.y + direction).obj.name.Contains(Constant.White))
+                    {
+                        possibleMoves.Add(new int[2] { this.x + dx, this.y + direction });
+                    }
                 }
             }
 
-            // TODO: En passant
+            if(GameManager.Instance.historyList.Count > 0)
+            {
+                var lastMove = GameManager.Instance.historyList.Last();
+                foreach (int dx in dxs)
+                {
+                    if (Util.GetPieceFromPieces(this.x + dx, this.y) != null)
+                    {
+                        if (isWhite && Util.GetPieceFromPieces(this.x + dx, this.y).obj.name.Contains(Constant.Black + "_" + Constant.Pawn) ||
+                            !isWhite && Util.GetPieceFromPieces(this.x + dx, this.y).obj.name.Contains(Constant.White + "_" + Constant.Pawn))
+                        {
+                            if (lastMove.newX == this.x + dx && lastMove.newY == this.y && lastMove.oriY == this.y + direction + direction && lastMove.movePiece.Contains(Constant.Pawn))
+                                possibleMoves.Add(new int[2] { this.x + dx, this.y + direction });
+                        }
+                    }
+                }
+            }
             return possibleMoves;
         }
 
+        // En passant not include in here because En passant only for enemy pawn
         public override List<int[]> GetKillPos()
         {
             List<int[]> possibleMoves = new();

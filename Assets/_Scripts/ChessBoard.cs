@@ -152,7 +152,7 @@ public class ChessBoard
         return Constant.Nothing;
     }
 
-    public void MoveChess()
+    public void MoveChess(string moveType)
     {
         var oriX = GameManager.Instance.chessSelectPos[0];
         var oriY = GameManager.Instance.chessSelectPos[1];
@@ -163,23 +163,36 @@ public class ChessBoard
         var oldPiece = Util.GetPieceFromPieces(newX, newY);
         pieces.Remove(oldPiece);
 
+        Piece killPawn = null;
+        if (moveType == Constant.EnPassant)
+        {
+            killPawn = Util.GetPieceFromPieces(newX, newY + (newY > oriY ? -1 : 1));
+            pieces.Remove(killPawn);
+        }
+
         var movedPiece = Util.GetPieceFromPieces(oriX, oriY);
         movedPiece.x = newX;
         movedPiece.y = newY;
 
         if (!CheckMoveValid())
         {
-            GameManager.Instance.moveToPos = new int[2] { -1, -1 };
-            movedPiece.x = oriX;
-            movedPiece.y = oriY;
             if (oldPiece != null)
                 pieces.Add(oldPiece);
+            if (killPawn != null)
+                pieces.Add(killPawn);
+
+            movedPiece.x = oriX;
+            movedPiece.y = oriY;
+            GameManager.Instance.moveToPos = new int[2] { -1, -1 };
+
             return;
         }
 
-        var killedPieceName = (oldPiece == null ? "" : oldPiece.obj.name);
+        var killedPieceName = (oldPiece == null ? killPawn == null ? "" : killPawn.obj.name : oldPiece.obj.name);
 
         oldPiece?.ClearPiece();
+        if(moveType == Constant.EnPassant)
+            killPawn?.ClearPiece();
         movedPiece.ChangePosition();
 
         // reset move related var and obj
@@ -276,6 +289,11 @@ public class ChessBoard
     public void AddPossibleMove(int x, int y)
     {
         possiblePosList.Add(new PossibleMove(x, y));
+    }
+
+    public void AddPossibleMove(int x, int y, string MoveType)
+    {
+        possiblePosList.Add(new PossibleMove(x, y, MoveType));
     }
 
     public void ClearPossibleMove()

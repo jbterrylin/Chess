@@ -77,7 +77,15 @@ namespace Assets._Scripts
                     }
                     foreach (var possibleMove in possibleMoves)
                     {
-                        ChessBoard.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1]);
+                        // En passant
+                        if (this.obj.name.Contains(Constant.Pawn) &&
+                            this.x != possibleMove[0] &&
+                            Util.GetPieceFromPieces(possibleMove[0], possibleMove[1]) == null)
+                        {
+                            ChessBoard.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1], Constant.EnPassant);
+                        } 
+                        else
+                            ChessBoard.GetInstance.AddPossibleMove(possibleMove[0], possibleMove[1]);
                     }
                     break;
                 case Constant.Nothing:
