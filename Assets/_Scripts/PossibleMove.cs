@@ -14,6 +14,7 @@ namespace Assets._Scripts
         public int x;
         public int y;
         public string moveType;
+        public int[] castleRookPos;
 
         public PossibleMove(int x, int y)
         {
@@ -26,6 +27,14 @@ namespace Assets._Scripts
             this.x = x;
             this.y = y;
             this.moveType = moveType;
+        }
+
+        public PossibleMove(int x, int y, string moveType, int[] castleRookPos)
+        {
+            this.x = x;
+            this.y = y;
+            this.moveType = moveType;
+            this.castleRookPos = castleRookPos;
         }
 
         public void ToScene()
@@ -53,7 +62,7 @@ namespace Assets._Scripts
         public void OnClick()
         {
             GameManager.Instance.moveToPos = new int[2] { x, y };
-            ChessBoard.GetInstance.MoveChess(moveType);
+            ChessBoard.GetInstance.MoveChess(this);
         }
 
         public void Destroy()

@@ -29,7 +29,7 @@ namespace Assets._Scripts
 
         public override string ToString()
         {
-            return "Move " + move + ":\n" + movePiece + "-(" + Util.IntToAlpha(oriX + 1) + oriY + ">" + Util.IntToAlpha(newX + 1) + newY + ")" + (killPiece != "" ? ("/" + killPiece) : "");
+            return "Move " + move + ":\n" + movePiece + "-(" + Util.IntToAlpha(oriX + 1) + (oriY + 1) + ">" + Util.IntToAlpha(newX + 1) + (newY+1) + ")" + (killPiece != "" ? ("/" + killPiece) : "");
         }
     }
 }

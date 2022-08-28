@@ -9,7 +9,8 @@ namespace Assets._Scripts
     static class Constant
     {
         public static readonly int[,] ChessBoardInit = { 
-            { 2,3,4,5,6,4,3,2 }, // white
+            //{ 2,3,4,5,6,4,3,2 }, // white
+            { 2,0,0,0,6,0,0,2 },
             { 1,1,1,1,1,1,1,1 }, // white
             { 0,0,0,0,0,0,0,0 },
             { 0,0,0,0,0,0,0,0 },
@@ -19,7 +20,6 @@ namespace Assets._Scripts
             { 2,3,4,5,6,4,3,2 }, // black
         };
 
-        public static readonly string Normal = "Normal";
         public static readonly string EnPassant = "EnPassant";
         public static readonly string Castling = "Castling";
 

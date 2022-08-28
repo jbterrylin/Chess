@@ -152,8 +152,10 @@ public class ChessBoard
         return Constant.Nothing;
     }
 
-    public void MoveChess(string moveType)
+    public void MoveChess(PossibleMove possibleMove)
     {
+        var moveType = possibleMove.moveType;
+
         var oriX = GameManager.Instance.chessSelectPos[0];
         var oriY = GameManager.Instance.chessSelectPos[1];
         var newX = GameManager.Instance.moveToPos[0];
@@ -170,6 +172,13 @@ public class ChessBoard
             pieces.Remove(killPawn);
         }
 
+        Piece castleRook = null;
+        if (moveType == Constant.Castling)
+        {
+            castleRook = Util.GetPieceFromPieces(possibleMove.castleRookPos[0], possibleMove.castleRookPos[1]);
+            castleRook.x = (newX > oriX ? (newX-1) : (newX+1));
+        }
+
         var movedPiece = Util.GetPieceFromPieces(oriX, oriY);
         movedPiece.x = newX;
         movedPiece.y = newY;
@@ -180,6 +189,8 @@ public class ChessBoard
                 pieces.Add(oldPiece);
             if (killPawn != null)
                 pieces.Add(killPawn);
+            if (castleRook != null)
+                castleRook.x = possibleMove.castleRookPos[0];
 
             movedPiece.x = oriX;
             movedPiece.y = oriY;
@@ -193,6 +204,8 @@ public class ChessBoard
         oldPiece?.ClearPiece();
         if(moveType == Constant.EnPassant)
             killPawn?.ClearPiece();
+        if (moveType == Constant.Castling)
+            castleRook.ChangePosition();
         movedPiece.ChangePosition();
 
         // reset move related var and obj
@@ -208,8 +221,11 @@ public class ChessBoard
         selectedOutline.SetActive(false);
 
         // add history
-        GameManager.Instance.AddToHistoryMove(new History(movedPiece.obj.name, oriX, oriY, newX, newY, killedPieceName), Constant.Move);
-        GameManager.Instance.AddToHistoryMove(null, GetMoveStatus());
+        if (moveType == Constant.Castling)
+            GameManager.Instance.AddToHistoryMove(new History(movedPiece.obj.name, oriX, oriY, newX, newY, killedPieceName), Constant.Castling);
+        else
+            GameManager.Instance.AddToHistoryMove(new History(movedPiece.obj.name, oriX, oriY, newX, newY, killedPieceName), Constant.Move);
+            GameManager.Instance.AddToHistoryMove(null, GetMoveStatus());
 
         GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
     }

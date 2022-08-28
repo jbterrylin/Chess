@@ -12,11 +12,7 @@ namespace Assets._Scripts.Pieces
         public override List<PossibleMove> GetPossibleMove()
         {
             List<PossibleMove> possibleMoves= new();
-            int direction = 0;
-            if (this.obj.name.Contains(Constant.White))
-                direction++;
-            else
-                direction--;
+            int direction = this.obj.name.Contains(Constant.White) ? 1 : -1;
 
             // normal move
             if (Util.GetPieceFromPieces(this.x, this.y + direction) == null)
@@ -74,11 +70,7 @@ namespace Assets._Scripts.Pieces
         public override List<int[]> GetKillPos()
         {
             List<int[]> possibleMoves = new();
-            int direction = 0;
-            if (this.obj.name.Contains(Constant.White))
-                direction++;
-            else
-                direction--;
+            int direction = this.obj.name.Contains(Constant.White) ? 1 : -1;
             // lazy to filter if x - 1 == -1 and x + 1 == 8
             possibleMoves.Add(new int[2] { this.x + 1, this.y + direction });
             possibleMoves.Add(new int[2] { this.x - 1, this.y + direction });

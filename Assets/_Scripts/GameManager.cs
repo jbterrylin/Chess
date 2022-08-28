@@ -49,6 +49,12 @@ public class GameManager : MonoBehaviour
             historyList.Last().status = status;
             history_scroll.text = history_scroll.text.Insert(history_scroll.text.Length - 1, "+");
         }
+        else if (status == Constant.Castling)
+        {
+            history.move = historyList.Count + 1;
+            historyList.Add(history);
+            history_scroll.text += "Move " + history.move + ":\n" + (history.newX-history.oriX > 0 ? "O-O" : "O-O-O") + "\n";
+        }
         else if (history != null)
         {
             history.move = historyList.Count + 1;

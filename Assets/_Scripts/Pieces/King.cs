@@ -40,23 +40,20 @@ namespace Assets._Scripts.Pieces
                     !isWhite && piece.obj.name.Contains(Constant.Black + "_" + Constant.Rook))
                 {
                     var rookName = isWhite ? Constant.White + "_" + Constant.Rook : Constant.Black + "_" + Constant.Rook;
-                    if(GameManager.Instance.historyList.Select(history => this.obj.name).Count() == 0 && 
-                        GameManager.Instance.historyList.Select(history => history.movePiece == rookName && history.oriX == this.initX && history.oriY == this.initY).Count() == 0)
+                    if(GameManager.Instance.historyList.Select(history => history.movePiece == obj.name).Count() == 0 && 
+                        GameManager.Instance.historyList.Select(history => history.movePiece == rookName && history.oriX == piece.initX && history.oriY == piece.initY).Count() == 0)
                     {
-                        int xi;
-                        if(this.x > piece.x)
-                            xi = 1;
-                        else
-                            xi = -1;
-                        for(int i=this.x+xi; xi<piece.x; i+=xi)
+                        int xi = this.x < piece.x ? 1 : -1;
+                        for(int i=this.x+xi; xi == 1 ? i <piece.x : i > piece.x; i+=xi)
                         {
                             if(Util.GetPieceFromPieces(i, this.y) != null)
                             {
+                                // between them hv piece, cant castle and directly return result
                                 return possibleMoves;
                             }
                         }
 
-                        possibleMoves.Add(new PossibleMove( this.x + xi + xi, this.y, Constant.Castling ));
+                        possibleMoves.Add(new PossibleMove( this.x + xi + xi, this.y, Constant.Castling, new int[2] { piece.x, piece.y } ));
                     }
                 }
             }
