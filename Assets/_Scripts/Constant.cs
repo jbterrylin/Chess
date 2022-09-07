@@ -8,9 +8,8 @@ namespace Assets._Scripts
 {
     static class Constant
     {
-        public static readonly int[,] ChessBoardInit = { 
-            //{ 2,3,4,5,6,4,3,2 }, // white
-            { 2,0,0,0,6,0,0,2 },
+        public static readonly int[,] ChessBoardInit = {
+            { 2,3,4,5,6,4,3,2 }, // white
             { 1,1,1,1,1,1,1,1 }, // white
             { 0,0,0,0,0,0,0,0 },
             { 0,0,0,0,0,0,0,0 },
@@ -18,6 +17,17 @@ namespace Assets._Scripts
             { 0,0,0,0,0,0,0,0 },
             { 1,1,1,1,1,1,1,1 }, // black
             { 2,3,4,5,6,4,3,2 }, // black
+        };
+
+        public static readonly int[,] ChessBoardNew = {
+            { 2,8,4,5,6,4,8,2 }, // white
+            { 7,7,7,7,7,7,7,7 }, // white
+            { 0,0,0,0,0,0,0,0 },
+            { 0,0,0,0,0,0,0,0 },
+            { 0,0,0,0,0,0,0,0 },
+            { 0,0,0,0,0,0,0,0 },
+            { 7,7,7,7,7,7,7,7 }, // black
+            { 2,8,4,5,6,4,8,2 }, // black
         };
 
         public static readonly string EnPassant = "EnPassant";
@@ -42,15 +52,20 @@ namespace Assets._Scripts
         public static readonly string Bishop = "bishop";
         public static readonly string Queen = "queen";
         public static readonly string King = "king";
+        public static readonly string PawnShowel = "pawn_showel";
+        public static readonly string KnightTroops = "knight_troops";
+
 
         public static readonly string[] ChessTypes =
         {
-            Pawn,
-            Rook,
-            Knight,
-            Bishop,
-            Queen,
-            King,
+            Pawn,           // 1
+            Rook,           // 2
+            Knight,         // 3
+            Bishop,         // 4
+            Queen,          // 5
+            King,           // 6
+            PawnShowel,     // 7
+            KnightTroops,   // 8
         };
 
         public static readonly float Pos0InX = 0.7031f;

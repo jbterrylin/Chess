@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets._Scripts;
 using Assets._Scripts.Pieces;
+using Assets._Scripts.Pieces.NewPieces;
 using System;
 using System.Linq;
 
@@ -29,9 +30,11 @@ public class ChessBoard
     public GameObject selectedOutline;
     public List<CheckingOutline> checkingOutlineList = new();
     public List<PossibleMove> possiblePosList = new();
+    readonly int[,] chessBoard;
 
     public ChessBoard()
     {
+        chessBoard = Constant.ChessBoardNew;
         chessSelectPos = new int[2] { -1, -1 };
         moveToPos = new int[2] { -1, -1 };
 
@@ -42,6 +45,10 @@ public class ChessBoard
             for (int chessColor = 0; chessColor < Constant.ChessColors.Length; chessColor++)
             {
                 var texture = Resources.Load("chess_green/" + Constant.ChessColors[chessColor] + "_" + Constant.ChessTypes[chessType]) as Texture2D;
+                if(texture == null)
+                {
+                    texture = Resources.Load("chess_new/" + Constant.ChessColors[chessColor] + "_" + Constant.ChessTypes[chessType]) as Texture2D;
+                }
                 sprites[Constant.ChessTypes[chessType]][chessColor] = texture;
                 texture.name = Constant.ChessColors[chessColor] + "_" + Constant.ChessTypes[chessType];
             }
@@ -52,7 +59,7 @@ public class ChessBoard
         {
             for (int x = 0; x < 8; x++)
             {
-                switch (Constant.ChessBoardInit[y, x])
+                switch (chessBoard[y, x])
                 {
                     case 1:
                         pieces.Add(new Pawn());
@@ -120,6 +127,28 @@ public class ChessBoard
                             pieces.Last().Instantiate(sprites[Constant.King][1], y ,x);
                         }
                         break;
+                    case 7:
+                        pieces.Add(new PawnShowel());
+                        if (y < 2)
+                        {
+                            pieces.Last().Instantiate(sprites[Constant.PawnShowel][0], y, x, true);
+                        }
+                        else
+                        {
+                            pieces.Last().Instantiate(sprites[Constant.PawnShowel][1], y, x, true);
+                        }
+                        break;
+                    case 8:
+                        pieces.Add(new KnightTroops());
+                        if (y < 2)
+                        {
+                            pieces.Last().Instantiate(sprites[Constant.KnightTroops][0], y, x, true);
+                        }
+                        else
+                        {
+                            pieces.Last().Instantiate(sprites[Constant.KnightTroops][1], y, x, true);
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -143,6 +172,7 @@ public class ChessBoard
         selectedOutline.SetActive(true);
         selectedOutline.transform.position = new Vector3(piece.x * Constant.SizeFor1Box, piece.y * Constant.SizeFor1Box, 0);
 
+        GameManager.Instance.ClearSkillList();
         ClearPossibleMove();
 
         if (
@@ -153,6 +183,7 @@ public class ChessBoard
         )
         {
             chessSelectPos = new int[2] { piece.x, piece.y };
+            piece.ShowSkills();
             return Constant.ShowPossible;
         } 
         return Constant.Nothing;

@@ -16,6 +16,7 @@ namespace Assets._Scripts
         public int y;
         public int initX;
         public int initY;
+        public List<Skill> skills = new();
 
         public void Instantiate(Texture2D texture, int y, int x)
         {
@@ -44,6 +45,12 @@ namespace Assets._Scripts
 
             // offset + (index * box width)
             obj.transform.position = new Vector3((Constant.SizeFor1Box / 4) + x * Constant.SizeFor1Box, (Constant.SizeFor1Box / 5) + y * Constant.SizeFor1Box, 0);
+        }
+
+        public void Instantiate(Texture2D texture, int y, int x, bool _)
+        {
+            Instantiate(texture, y, x);
+            InstantiateSkill();
         }
 
         public void ChangePosition()
@@ -104,6 +111,18 @@ namespace Assets._Scripts
         public virtual List<int[]> PosCanSuicide()
         {
             return null;
+        }
+
+        public void ShowSkills()
+        {
+            foreach (var skill in skills)
+            {
+                skill.ShowSkillToScene();
+            }
+        }
+
+        public virtual void InstantiateSkill()
+        {
         }
     }
 }

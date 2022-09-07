@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public bool isWhiteTurn = true;
     public List<History> historyList = new();
     public Text history_scroll;
+    public List<GameObject> skillList = new();
 
     void Start()
     {
@@ -57,5 +58,22 @@ public class GameManager : MonoBehaviour
             historyList.Add(history);
             history_scroll.text += history.ToString() + "\n";
         }
+    }
+
+    public void ClearSkillList()
+    {
+        for(int i = 1; i < 4; i++)
+        {
+            var img = GameObject.Find("Canvas/Skill_" + i + "/Button").GetComponent<Image>();
+            img.sprite = null;
+            var text = GameObject.Find("Canvas/Skill_" + i + "/Text").GetComponent<Text>();
+            text.text = "";
+
+            if (GameObject.Find("Canvas/Skill_" + i + "/Button").TryGetComponent(out EventTrigger eventTrigger1))
+            {
+                Destroy(eventTrigger1);
+            }
+        }
+        
     }
 }
