@@ -15,12 +15,13 @@ namespace Assets._Scripts.Pieces
             int direction = this.obj.name.Contains(Constant.White) ? 1 : -1;
 
             // normal move
-            if (Util.GetPieceFromPieces(this.x, this.y + direction) == null)
+            if (!Util.CheckEnemyTrenchExist(this.x, this.y + direction, this.obj.name.Contains(Constant.White)) && 
+                Util.GetPieceFromPieces(this.x, this.y + direction) == null)
             {
                 possibleMoves.Add(new PossibleMove(this.x, this.y + direction));
 
                 // charge
-                if (
+                if (!Util.CheckEnemyTrenchExist(this.x, this.y + direction, this.obj.name.Contains(Constant.White)) &&
                     ((this.obj.name.Contains(Constant.White) && this.y == 1) ||
                     (this.obj.name.Contains(Constant.Black) && this.y == 6)) &&
                     Util.GetPieceFromPieces(this.x, this.y + direction + direction) == null
@@ -57,8 +58,11 @@ namespace Assets._Scripts.Pieces
                         if (isWhite && Util.GetPieceFromPieces(this.x + dx, this.y).obj.name.Contains(Constant.Black + "_" + Constant.Pawn) ||
                             !isWhite && Util.GetPieceFromPieces(this.x + dx, this.y).obj.name.Contains(Constant.White + "_" + Constant.Pawn))
                         {
-                            if (lastMove.newX == this.x + dx && lastMove.newY == this.y && lastMove.oriY == this.y + direction + direction && lastMove.movePiece.Contains(Constant.Pawn))
-                                possibleMoves.Add(new PossibleMove(this.x + dx, this.y + direction, Constant.EnPassant ));
+                            if (lastMove.newX == this.x + dx && lastMove.newY == this.y && 
+                                lastMove.oriY == this.y + direction + direction && 
+                                lastMove.movePiece.Contains(Constant.Pawn))
+                                if(!Util.CheckEnemyTrenchExist(this.x + dx, this.y + direction, isWhite))
+                                    possibleMoves.Add(new PossibleMove(this.x + dx, this.y + direction, Constant.EnPassant ));
                         }
                     }
                 }

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets._Scripts.Skills
 {
-    class Trench: Skill
+    public class Trench: Skill
     {
         public Trench(Piece piece)
         {
@@ -16,11 +16,38 @@ namespace Assets._Scripts.Skills
             this.skillNo = 1;
             this.texture = texture;
             this.skillText = "abc";
+            this.cooldown = 0;
         }
 
         public override void Skill1()
         {
-            Debug.Log("Skill1");
+            if(ChessBoard.GetInstance.skillUsed)
+            {
+                Debug.Log("skillUsed");
+                return;
+            }
+
+            var texture = Resources.Load("skills/trench") as Texture2D;
+
+            int direction = piece.obj.name.Contains(Constant.White) ? 1 : -1;
+
+            GameObject obj = new();
+            SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
+            renderer.sortingLayerName = Constant.ChessLayer;
+            renderer.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+            
+            obj.transform.localScale = new Vector3(Constant.ScaleSize, Constant.ScaleSize, 1);
+            obj.transform.position = new Vector3((Constant.SizeFor1Box / 5) + piece.x * Constant.SizeFor1Box, (Constant.SizeFor1Box / 2.5f) + (piece.y + direction) * Constant.SizeFor1Box, 0);
+            obj.name = (obj.name.Contains(Constant.White) ? Constant.White : Constant.Black) + "trench";
+
+            x = piece.x;
+            y = piece.y + direction;
+            isWhite = piece.obj.name.Contains(Constant.White);
+
+
+            ChessBoard.GetInstance.skillUsed = true;
+            ChessBoard.GetInstance.ClearPossibleMove();
+            ChessBoard.GetInstance.trenchs.Add(this);
         }
     }
 }

@@ -15,6 +15,11 @@ namespace Assets._Scripts
         public Texture2D texture;
         public String skillText;
         public Piece piece;
+        public int cooldown;
+        public int cd;
+        public int x;
+        public int y;
+        public bool isWhite;
 
         public void ShowSkillToScene()
         {

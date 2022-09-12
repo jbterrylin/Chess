@@ -24,7 +24,13 @@ namespace Assets._Scripts.Pieces
 
                 if (tmpx >= 0 && tmpx < 8 && tmpy >= 0 && tmpy < 8)
                 {
-                    if (Util.GetPieceFromPieces(tmpx, tmpy) == null)
+                    if (Util.CheckTeamTrenchExist(tmpx, tmpy, isWhite))
+                    {
+                        possibleMoves.Add(new PossibleMove(tmpx, tmpy));
+                        break;
+                    } else if (Util.CheckEnemyTrenchExist(tmpx, tmpy, isWhite))
+                        break;
+                    else if (Util.GetPieceFromPieces(tmpx, tmpy) == null)
                         possibleMoves.Add(new PossibleMove ( tmpx, tmpy ));
                     else if (isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black) ||
                         !isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.White))

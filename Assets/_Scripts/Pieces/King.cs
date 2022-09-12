@@ -24,7 +24,9 @@ namespace Assets._Scripts.Pieces
 
                 if (tmpx >= 0 && tmpx < 8 && tmpy >= 0 && tmpy < 8)
                 {
-                    if (Util.GetPieceFromPieces(tmpx, tmpy) == null)
+                    if (Util.CheckEnemyTrenchExist(tmpx, tmpy, isWhite))
+                        continue;
+                    else if (Util.GetPieceFromPieces(tmpx, tmpy) == null)
                         possibleMoves.Add(new PossibleMove( tmpx, tmpy ));
                     else if (Util.GetPieceFromPieces(tmpx, tmpy) != null &&
                         (isWhite && Util.GetPieceFromPieces(tmpx, tmpy).obj.name.Contains(Constant.Black) ||
@@ -46,7 +48,8 @@ namespace Assets._Scripts.Pieces
                         int xi = this.x < piece.x ? 1 : -1;
                         for(int i=this.x+xi; xi == 1 ? i <piece.x : i > piece.x; i+=xi)
                         {
-                            if(Util.GetPieceFromPieces(i, this.y) != null)
+                            if(Util.GetPieceFromPieces(i, this.y) != null ||
+                                Util.CheckEnemyTrenchExist(i, this.y, isWhite))
                             {
                                 // between them hv piece, cant castle and directly return result
                                 return possibleMoves;

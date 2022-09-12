@@ -6,6 +6,7 @@ using Assets._Scripts.Pieces;
 using Assets._Scripts.Pieces.NewPieces;
 using System;
 using System.Linq;
+using Assets._Scripts.Skills;
 
 public class ChessBoard
 {
@@ -20,17 +21,21 @@ public class ChessBoard
         }
     }
 
+    readonly int[,] chessBoard;
     public int[] chessSelectPos;
     public int[] moveToPos;
 
     public readonly List<Piece> pieces = new();
     readonly Dictionary<string, Texture2D[]> sprites = new();
-    public GameManager gm;
 
     public GameObject selectedOutline;
     public List<CheckingOutline> checkingOutlineList = new();
     public List<PossibleMove> possiblePosList = new();
-    readonly int[,] chessBoard;
+
+
+    // skill related
+    public bool skillUsed = false;
+    public List<Trench> trenchs = new();
 
     public ChessBoard()
     {
@@ -245,26 +250,33 @@ public class ChessBoard
             castleRook.ChangePosition();
         movedPiece.ChangePosition();
 
-        // reset move related var and obj
-        chessSelectPos = new int[2] { -1, -1 };
-        moveToPos = new int[2] { -1, -1 };
-        ClearPossibleMove();
-        if (checkingOutlineList.Count != 0)
-        foreach (var checkingOutline in checkingOutlineList)
-        {
-            checkingOutline.Destroy();
-        }
-        checkingOutlineList.Clear();
-        selectedOutline.SetActive(false);
+        Reset();
 
         // add history
         if (moveType == Constant.Castling)
             GameManager.Instance.AddToHistoryMove(new History(movedPiece.obj.name, oriX, oriY, newX, newY, killedPieceName), Constant.Castling);
         else
             GameManager.Instance.AddToHistoryMove(new History(movedPiece.obj.name, oriX, oriY, newX, newY, killedPieceName), Constant.Move);
-            GameManager.Instance.AddToHistoryMove(null, GetMoveStatus());
+        GameManager.Instance.AddToHistoryMove(null, GetMoveStatus());
 
         GameManager.Instance.isWhiteTurn = !GameManager.Instance.isWhiteTurn;
+    }
+
+    public void Reset()
+    {
+        // reset move related var and obj
+        chessSelectPos = new int[2] { -1, -1 };
+        moveToPos = new int[2] { -1, -1 };
+        skillUsed = false;
+        ClearPossibleMove();
+        if (checkingOutlineList.Count != 0)
+            foreach (var checkingOutline in checkingOutlineList)
+            {
+                checkingOutline.Destroy();
+            }
+        checkingOutlineList.Clear();
+        selectedOutline.SetActive(false);
+        GameManager.Instance.ClearSkillList();
     }
 
     // check all enemy piece can take king if chess moved

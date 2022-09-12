@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets._Scripts.Skills;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,16 @@ namespace Assets._Scripts
         public static Piece GetPieceByObjName(string name)
         {
             return ChessBoard.GetInstance.pieces.FirstOrDefault(p => p.obj.name == name);
+        }
+
+        public static bool CheckTeamTrenchExist(int x, int y, bool isWhite)
+        {
+            return ChessBoard.GetInstance.trenchs.Exists(p => p.y == y && p.x == x && p.isWhite == isWhite);
+        }
+
+        public static bool CheckEnemyTrenchExist(int x, int y, bool isWhite)
+        {
+            return ChessBoard.GetInstance.trenchs.Exists(p => p.y == y && p.x == x && p.isWhite != isWhite);
         }
 
         public static string IntToAlpha(int i)
