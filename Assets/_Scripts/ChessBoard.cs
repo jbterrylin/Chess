@@ -241,6 +241,12 @@ public class ChessBoard
             return;
         }
 
+        if(Util.CheckTrenchExist(newX, newY))
+        {
+            var trench = trenchs.FirstOrDefault(p => p.y == newY && p.x == newX);
+            trench.RemoveTrenchFromScene();
+        }
+
         var killedPieceName = (oldPiece == null ? killPawn == null ? "" : killPawn.obj.name : oldPiece.obj.name);
 
         oldPiece?.ClearPiece();

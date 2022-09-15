@@ -9,6 +9,8 @@ namespace Assets._Scripts.Skills
 {
     public class Trench: Skill
     {
+        GameObject obj = new();
+
         public Trench(Piece piece)
         {
             this.piece = piece;
@@ -31,7 +33,6 @@ namespace Assets._Scripts.Skills
 
             int direction = piece.obj.name.Contains(Constant.White) ? 1 : -1;
 
-            GameObject obj = new();
             SpriteRenderer renderer = obj.AddComponent<SpriteRenderer>();
             renderer.sortingLayerName = Constant.ChessLayer;
             renderer.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
@@ -48,6 +49,11 @@ namespace Assets._Scripts.Skills
             ChessBoard.GetInstance.skillUsed = true;
             ChessBoard.GetInstance.ClearPossibleMove();
             ChessBoard.GetInstance.trenchs.Add(this);
+        }
+
+        public void RemoveTrenchFromScene()
+        {
+            UnityEngine.Object.Destroy(obj);
         }
     }
 }

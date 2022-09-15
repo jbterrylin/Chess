@@ -20,6 +20,11 @@ namespace Assets._Scripts
             return ChessBoard.GetInstance.pieces.FirstOrDefault(p => p.obj.name == name);
         }
 
+        public static bool CheckTrenchExist(int x, int y)
+        {
+            return ChessBoard.GetInstance.trenchs.Exists(p => p.y == y && p.x == x);
+        }
+
         public static bool CheckTeamTrenchExist(int x, int y, bool isWhite)
         {
             return ChessBoard.GetInstance.trenchs.Exists(p => p.y == y && p.x == x && p.isWhite == isWhite);

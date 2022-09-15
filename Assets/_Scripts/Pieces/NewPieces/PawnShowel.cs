@@ -22,6 +22,7 @@ namespace Assets._Scripts.Pieces.NewPieces
 
                 // charge
                 if (!Util.CheckEnemyTrenchExist(this.x, this.y + direction + direction, this.obj.name.Contains(Constant.White)) &&
+                    !Util.CheckTrenchExist(this.x, this.y + direction) &&
                     ((this.obj.name.Contains(Constant.White) && this.y == 1) ||
                     (this.obj.name.Contains(Constant.Black) && this.y == 6)) &&
                     Util.GetPieceFromPieces(this.x, this.y + direction + direction) == null
